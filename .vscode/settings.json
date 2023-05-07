@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/272c99f1-5e5d-4490-b0ad-cb296448b8e5/resourceGroups/alexreact/providers/Microsoft.Web/sites/alexreact",
+    "appService.deploySubpath": "."
+}

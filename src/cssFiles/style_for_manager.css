@@ -1,0 +1,142 @@
+#container-table{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-evenly;
+    background-color: rgba(0, 0, 0, 0.712);
+}
+table{
+    text-align: center; 
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+th{
+    color: #ffffff;
+    font-style: initial;
+}
+td, th{
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+.btns{
+    display: flex;
+    flex-flow: row wrap;
+}
+.btn_gadget{
+    margin: 0 auto;
+    width: 100px;
+    height: 40px;
+    border-radius: 15px;
+    border-width: 1px;
+    border-color: gold;
+    background-color: gold;
+}
+.btn_gadget:hover{
+    border-color: #9f68cc;
+    background-color: #9f68cc;
+    color: white;
+}
+#container_for_form{
+    left: 42%;
+    position: absolute;
+    text-align: center;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-evenly;
+    background-color: #ffffff;
+}
+#form1{
+    
+    flex-flow: column wrap;
+    justify-content: center;
+    width: 200px; 
+    border-color: rgb(163, 163, 163);
+    border-width: 1px;
+    border-style: solid;
+}
+#form1:hover{
+    box-shadow: 0px 0px 5px #757575;
+}
+#form2{
+   
+    flex-flow: column wrap;
+    justify-content: center;
+    width: 200px; 
+    border-color: rgb(163, 163, 163);
+    border-width: 1px;
+    border-style: solid;
+}
+#form2:hover{
+    box-shadow: 0px 0px 5px #757575;
+}
+.cart_gadget-table{
+    margin-top: 10px;
+    font-size: 18px;
+    color: #f0f8fff5;
+}
+.img_gadget-table{
+    width: 100%;
+    max-height: 120px;
+    max-width: 80px;
+}
+#DellBtn{
+    width: 30px;
+    height: 30px;
+    border-radius: 15px;
+    text-align: center;
+    color: aliceblue;
+    background-color: rgb(236, 100, 100);
+    border: none;
+}
+#DellBtn:hover{
+    color: gold;
+    border-style: solid;
+}
+#UpdateBtn{
+    height: 30px;
+    border-radius: 15px;
+    border-width: 1px;
+    border-color: gold;
+    background-color: gold;
+}
+#UpdateBtn:hover{
+    border-color: #9f68cc;
+    background-color: #9f68cc;
+    color: white;
+}
+select{
+    display: inline-block;
+    width: 180px;
+    line-height: 30px;
+    position: relative;
+}
+.file{
+    margin-top: 5px;
+    margin-bottom: 5px;
+    width: 200px;
+}
+input[type=file]::file-selector-button {
+    margin-right: 5px;
+    border: none;
+    background: gold;
+    padding: 10px 10px;
+    border-radius: 10px;
+    color: black;
+    cursor: pointer;
+}
+  input[type=file]::file-selector-button:hover {
+    color: white;
+    background: #9f68cc;
+}
+#selectFile{
+    text-align: left;
+    font-size: 14px;
+    width: 90px;
+    bottom: 358px;
+    left: 110px;
+    background-color: white;
+    position: absolute;
+}
+
+

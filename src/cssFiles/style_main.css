@@ -1,0 +1,400 @@
+#DivRegisAndLoginLinks{
+  display: flex;
+  align-items: center;
+  justify-content:space-between;
+  flex-flow: row wrap;
+}
+.container-menu {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-evenly;
+  flex-flow: row wrap;
+  background-color: #dfdfdf;
+  border-radius: 15px;
+}
+.container-menu > .name_category {
+  margin: 10px;
+  padding: 10px;
+  font-size: 16px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.name_category:hover {
+  border-bottom-style: solid;
+  border-block-color: #9f68cc;
+}
+.link{
+  font-family: Arial, Helvetica, sans-serif;
+  color: #686868;
+  text-decoration: none;
+}
+.hamburger{
+  display: none;
+  background-image: url(https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Hamburger_icon.svg/1024px-Hamburger_icon.svg.png);
+  background-size: cover;
+  width: 25px;
+  height: 25px;
+  position: absolute;
+  top: 0px;
+  z-index: 2;
+
+}
+.formRegistration {
+  display: flex;
+  flex-flow: column wrap;
+}
+.container-menu {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-evenly;
+  flex-flow: row wrap;
+  background-color: #dfdfdf;
+  border-radius: 20px;
+
+}
+.container-menu:hover{
+  box-shadow: 0px 0px 5px #757575;
+}
+.container-menu > .name_category {
+  margin: 10px;
+  padding: 10px;
+  font-size: 16px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.name_category:hover {
+  border-bottom-style: solid;
+  border-block-color: #9f68cc;
+}
+.cart{
+  background-color: rgba(235, 235, 235, 0.822);
+  width: 250px;
+  height: 250px;
+  margin: 10px;
+  padding: 20px;
+  border-color: rgb(226, 226, 226);
+  border-width: 2px;
+  border-style: solid;
+}
+.cart:hover{
+box-shadow: 0px 0px 5px #757575;
+}
+.img_gadget{
+width: 100%;
+max-height: 120px;
+max-width: 100px;
+margin-left: 75px;
+}
+.cart_gadget{
+text-align: center;
+margin-top: 10px;
+font-size: 16px;
+color: #000000;
+font-family: Arial, Helvetica, sans-serif;
+}
+.BuyBtn{
+font-size: 16px;
+border-radius: 15px;
+border-width: 1px;
+border-color: gold;
+background-color: gold;
+width: 80px;
+height: 30px;
+margin-top: 10px;
+margin-left: 85px; 
+}
+button:hover{
+border-color: #9f68cc;
+background-color: #9f68cc;
+color: white;
+}
+.top {
+  cursor: pointer;
+  font-family: 'Bebas Neue', cursive;
+  font-size: 3em;
+  transform: translate(-50%,-50%);
+  background-image: linear-gradient(gold, gold);
+  background-size: 100% 10px;
+  background-repeat: no-repeat;
+  background-position: 100% 0%;
+   transition: background-size .7s, background-position .5s ease-in-out;
+}
+.top:hover {
+  background-size: 100% 100%;
+  background-position: 0% 100%;
+  transition: background-position .7s, background-size .5s ease-in-out;
+}
+#form-search{
+  position: relative;
+  top: 30px;
+  left: 100px;
+  transform: translate(-50%,-50%);
+  transition: all 1s;
+  width: 50px;
+  height: 50px;
+  background: rgba(235, 235, 235, 0.822);
+  box-sizing: border-box;
+  border-radius: 25px;
+  border: 4px solid white;
+  padding: 5px;
+}
+#input-form-search{
+  background: rgba(235, 235, 235, 0.822);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 42.5px;
+  line-height: 30px;
+  outline: 0;
+  border: 0;
+  display: none;
+  font-size: 1em;
+  border-radius: 20px;
+  padding: 0 20px;
+}
+#fa-search{
+  box-sizing: border-box;
+  padding: 10px;
+  width: 42.5px;
+  height: 42.5px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  border-radius: 50%;
+  color: #07051a;
+  text-align: center;
+  font-size: 1.2em;
+  transition: all 1s;
+}
+#form-search:hover,
+#form-search:valid{
+  width: 350px;
+  cursor: pointer;
+}
+#form-search:hover #input-form-search,
+#form-search:valid #input-form-search{
+  display: block;
+  
+}
+#form-search:hover #fa-search,
+#form-search:valid #fa-search{
+  background: #07051a;
+  color: white;
+}
+#clear-btn {
+  display: none;
+  position: absolute;
+  top: 5px;
+  right: 50px;
+  font-size: 20px;
+  color: rgb(146, 146, 146);
+  text-align: center; 
+}
+#form-search:hover #clear-btn,
+#form-search:valid #clear-btn {
+  display: inline;
+}
+#form-search:hover #logo-search,
+#form-search:valid #logo-search{
+  filter: invert(100%) sepia(0%) saturate(7466%) hue-rotate(0deg) brightness(94%) contrast(115%);
+}
+.slider {
+  position: relative;
+  height: 50vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+.image {
+  width: 800px;
+  height: 300px;
+  border-radius: 10px;
+}
+.right-arrow {
+  height: 80px;
+  position: absolute;
+  top: 50%;
+  right: 32px;
+  z-index: 1;
+  cursor: pointer;
+  user-select: none;
+  filter: invert(60%) sepia(0%) saturate(7466%) hue-rotate(0deg) brightness(94%) contrast(115%);
+}
+.left-arrow {
+  transform: rotate(180deg);
+  height: 80px;
+  position: absolute;
+  top: 50%;
+  left: 32px;
+  z-index: 1;
+  cursor: pointer;
+  user-select: none;
+  filter: invert(60%) sepia(0%) saturate(7466%) hue-rotate(0deg) brightness(94%) contrast(115%);
+}
+.left-arrow:hover{
+  box-shadow: 0px 0px 5px #757575;;
+}
+.right-arrow:hover{
+  box-shadow: 0px 0px 5px #757575;;
+}
+.slide {
+  opacity: 0;
+  transition-duration: 1s ease;
+}
+.slide.active {
+  opacity: 1;
+  transition-duration: 1s;
+  transform: scale(1.08);
+}
+.end-page{
+  background-image: url("https://alexstsorageblops.blob.core.windows.net/magic/SL-092619-23740-28.jpg");
+  background-size: 50%;
+  background-color: #1b1b1b;
+  display: flex;
+  align-items: stretch;
+  justify-content: space-evenly;
+  flex-flow: row wrap;
+  font-size: 14px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.numbers-and-socials-links{
+  color: white;
+}
+.numbers-and-socials-links p:hover{
+  cursor: pointer;
+  color: gold;
+}
+.social-logo:hover{
+  cursor: pointer;
+  filter: invert(0%) sepia(100%) saturate(7466%) hue-rotate(0deg) brightness(94%) contrast(115%);
+}
+.addresses p:hover{
+  cursor: pointer;
+  color: gold;
+}
+.hamburgerMenu{
+  display: none;
+  text-align: center;
+}
+@media screen and (max-width: 500px) {
+
+  .hamburger
+  {
+    display: inline;
+    position: absolute;
+  }
+  
+  .hamburger:hover .hamburgerMenu
+  {
+    display: inline;
+    background-color: lightgray;
+    width: 100px;
+    height: 100vh;
+    position: absolute;
+  }
+  .hamburger:hover .hamburgerMenu div 
+  {
+    width: 100px;
+    float:inline-start;
+    position:relative;
+    margin-top: 30%;
+    text-align: center;
+  }
+  .hamburger:hover .hamburgerMenu div:hover
+  {
+    text-decoration: underline;
+  }
+  #DivRegisAndLoginLinks
+  {
+    display: none;
+  }
+  .container-menu{
+    display: none;
+    background: none;
+    border-radius: 30px;
+    font-size: 8px;
+  }
+  .name_category{
+    float: none;
+    text-align: left;
+  }
+}
+.columns-menu{
+    display: flex;
+    justify-content: space-evenly;
+    flex-flow: row wrap;
+    font-size: 14px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.columns-menu > .col-left-siderbar{
+    margin-left: 20px;
+    font-size: 16px;
+}
+.col-left-siderbar label{
+    color: #838383;
+    font-size: 12px;
+}
+.range-class{
+    display: flex;
+    flex-flow: column;
+    border-bottom-style: solid;
+    border-width: 1px;
+    border-color: #dfdfdf;
+    width: 200px;
+}
+#container-tovarov{
+    display: flex;
+    flex-flow: row wrap;
+    align-items: stretch;
+    justify-content: space-evenly;
+    width: 1000px;
+    border-top-style: solid;
+    border-width: 1px;
+    border-color: #dfdfdf;
+}
+.BtnFilter{
+    font-size: 16px;
+    border-radius: 15px;
+    border-width: 1px;
+    border-color: gold;
+    background-color: gold;
+    width: 80px;
+    height: 30px;
+}
+#slider{
+    color: rgb(230, 201, 37);
+}
+#out:hover{
+  color: #9f68cc;
+}
+.link:hover{
+  color: #9f68cc;
+}
+.pagination{
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  flex-flow: row wrap;
+  margin-left: 20%;
+}
+#basket-form{
+  left: 30%;
+  max-height: 400px;
+  overflow-y: scroll;
+  position: absolute;
+  z-index: 1;
+  text-align: center;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-evenly;
+  background-color: #ffffff;
+  font-size: 14px;
+}
+#basket-form:hover{
+  box-shadow: 0px 0px 5px #757575;
+}
+.img-gadget-table{
+  width: 100%;
+  max-height: 80px;
+  max-width: 60px;
+}
