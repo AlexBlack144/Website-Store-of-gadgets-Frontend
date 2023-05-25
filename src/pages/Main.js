@@ -1,8 +1,10 @@
 import { Link, Outlet } from "react-router-dom";
 import { SliderData } from '../components/SliderData.js';
 import { myBasketGadjets } from '../components/myBasketGadjets.ts';
+import { Hosting } from '../components/Hosting.ts';
 import { useEffect, useState } from "react";
 import { useClipboard } from 'use-clipboard-copy';
+import { myPurchases } from '../components/myPurchases.ts';
 
 import '../cssFiles/style_main.css';
 
@@ -13,17 +15,20 @@ import Slider from "@mui/material/Slider";
 import Cards from "../components/Cards.js";
 import Paginationee from "../components/Paginationee.js";
 import BasketGadjeds  from '../components/BasketGadjeds.js';
+import Purchases from '../components/Purchases.js';
 
 function Main(){
 
     var uniqueNames = [];
     const clipboard = useClipboard();
+    const [host] = useState(new Hosting());
     const [countGadgetBasket, setCountGadgetBasket] = useState(1);
     const [baskeGadgets, setBaskeGadgets] = useState([]);
     const [basketFormInline, setBasketFormInline] = useState('none');
     const [basketCount, setBasketCount] = useState(0);
     const [models, setModels] = useState([]);
     const [gadgets, setGadgets] = useState([]);
+    const [gadgets2, setGadgets2] = useState([]);
     const [categories, setCategories] = useState([]);
     const [flag, setFlag] = useState(0);
     const [flag2, setFlag2] = useState(0);
@@ -32,7 +37,9 @@ function Main(){
     const [currentPage, setCurrentPage] = useState(1);
     const [cardsPerPage, setcardsPerPage] = useState(6);
     const [current, setCurrent] = useState(0);
-    
+    const [purchasesFormInline, setPurchasesFormInline] = useState('none');
+    const [purchases,setPurchases] = useState([]);
+
     const paginate = pageNumber => setCurrentPage(pageNumber)
     const nextSlide = () => {setCurrent(current === length - 1 ? 0 : current + 1);};
     const prevSlide = () => {setCurrent(current === 0 ? length - 1 : current - 1);};
@@ -50,7 +57,7 @@ function Main(){
     function getOut(){
         if(window.sessionStorage.getItem('token')==null|| window.sessionStorage.getItem('token')=='null')
         {
-            alert('You don`t login!');
+            alert('You are not logged in!');
         }
         else{
             
@@ -66,7 +73,7 @@ function Main(){
         {
             axios({
                 method:'get',
-                url: "https://webapplicationclient20230302194755.azurewebsites.net/Gadget/GetGadgets",
+                url: `https://${host.getHost()}/Gadget/GetGadgets`,
                 headers: {
                     'Accept': '*/*',
                     'Content-Type': 'application/json'
@@ -84,7 +91,7 @@ function Main(){
     {
         axios({
             method:'get',
-            url: `https://webapplicationclient20230302194755.azurewebsites.net/Gadget/GetGadgetbyId_Category?id=${id}`,
+            url: `https://${host.getHost()}/Gadget/GetGadgetbyId_Category?id=${id}`,
             headers: {
                 'Accept': '*/*',
                 'Content-Type': 'application/json'
@@ -100,7 +107,7 @@ function Main(){
     {
         axios({
             method:'get',
-            url: `https://webapplicationclient20230302194755.azurewebsites.net/Gadget/GetGadgetbyName?name=${name}`,
+            url: `https://${host.getHost()}/Gadget/GetGadgetbyName?name=${name}`,
             headers: {
                 'Accept': '*/*',
                 'Content-Type': 'application/json'
@@ -122,7 +129,7 @@ function Main(){
         };
         axios({
             method:'post',
-            url: "https://webapplicationclient20230302194755.azurewebsites.net/Gadget/GetGadgetFilter",
+            url: `https://${host.getHost()}/Gadget/GetGadgetFilter`,
             data: JSON.stringify(filter_gadget),
             dataType: "dataType",
             headers: {
@@ -142,7 +149,7 @@ function Main(){
         {
             axios({
                 method:'get',
-                url: "https://webapplicationclient20230302194755.azurewebsites.net/Category/GetCategorys",
+                url: `https://${host.getHost()}/Category/GetCategorys`,
                 headers: {
                     'Accept': '*/*',
                     'Content-Type': 'application/json'
@@ -199,35 +206,96 @@ function Main(){
         baskeGadgets.push(new myBasketGadjets(999999, "image", "name", "model", 0, 0, 0, "status", 1))
         setBaskeGadgets(baskeGadgets.filter(item => item.id != 999999));
     }
+    function getMyPurchase(){
+      
+        axios({
+            method:'get',
+            url: `https://${host.getHost()}/Purchase/GetPurchaseByUserId`,
+            headers: {
+                'Accept': '*/*',
+                'Content-Type': 'application/json',
+                "Authorization": "Bearer " + window.sessionStorage.getItem('token'),
+            }
+        })
+        .then(data=>
+        {
+            setPurchases(data.data);
+        });
+    }
     return(
     <div className="App1">
         <div className="App-header1">
             <div className="hamburger">
                 <div className="hamburgerMenu">
-                    <div><Link className="link" to="/regist">Regist</Link></div>
-                    <div><Link className="link" to="/login">Login</Link></div>
-                    <div><b className="link"  style={{ cursor: 'pointer'}} id="out" onClick={()=>getOut()}>Out</b></div> 
+                
+                        <Link className="link" to="/regist">
+                            Regist  
+                            <img src="https://web-design-kursak.s3.eu-west-2.amazonaws.com/create_black_24dp+(1).svg" style={{width:'18px', height: '18px'}}></img>
+                            </Link>
+                        <Link className="link" to="/login">
+                            Login   
+                            <img src="https://web-design-kursak.s3.eu-west-2.amazonaws.com/person_outline_black_24dp+(1).svg" style={{width:'18px', height: '18px'}}></img>
+                        </Link>
+           
+                  
+                        <div id="purchases" onClick={()=>{
+                            if(window.sessionStorage.getItem('token')==null || window.sessionStorage.getItem('token')=='null')
+                            {   
+                                alert("You need to Login!")
+                            }
+                            else{
+                                getMyPurchase(); 
+                                setPurchasesFormInline('inline');
+                            }}} style={{ cursor: 'pointer'}}>
+                            <b className="link" id="purchases">History</b>
+                            <img src="https://web-design-kursak.s3.eu-west-2.amazonaws.com/shopping_bag_black_24dp.svg" style={{width:'18px', height: '18px'}}></img>
+                        </div>
+               
+                        <div id="basket" onClick={()=>{if(basketCount!=0){setBasketFormInline('inline')}}} style={{ cursor: 'pointer'}}>
+                            <b className="link" id="basket">{basketCount}</b>
+                            <img src="https://web-design-kursak.s3.eu-west-2.amazonaws.com/basket+(1).svg" style={{width:'18px', height: '18px'}}></img>
+                        </div>
 
+                        
+                  
                     {
                         categories.map((item, index)=>(
                             <div key={index} style={{ cursor: 'pointer'}} className = "link" id={item.id} onClick={() => getGadgetsById(item.id)}>
                             {item.name}
                             </div>
                         ))
-                    }      
+                    }   
+                    <div  onClick={()=>getOut()} style={{ cursor: 'pointer'}}>
+                            <b className="link" >Out   </b>
+                            <img src="https://web-design-kursak.s3.eu-west-2.amazonaws.com/logout_black_24dp+(1).svg" style={{width:'18px', height: '18px'}}></img>
+                        </div>   
+                </div>
+                <div id="form-search" className="searchClass" action="">
+                    <input id="input-form-search" type="search" required value={search} onChange={(e)=>{setSearch(e.target.value)}}
+                    onKeyDown={(event) =>
+                        {
+                            if (event.key === 'Enter') {
+                                getGadgetsByName(search)
+                            }
+                        }}
+                    ></input>
+                    <i id="fa-search" onClick={()=>getGadgetsByName(search)}>
+                        <img id="logo-search" src="https://web-design-kursak.s3.eu-west-2.amazonaws.com/search.svg"></img>
+                    </i>
+                    <a id="clear-btn" onClick={()=>clearSearch()}>X</a>
                 </div>
             </div>
             <div id="DivRegisAndLoginLinks">
                 <div>
                     <Link className="link" to="/regist">
                         Regist  
-                        <img src="https://alexstsorageblops.blob.core.windows.net/magic/create_black_24dp.svg" style={{width:'18px', height: '18px'}}></img>
+                        <img src="https://web-design-kursak.s3.eu-west-2.amazonaws.com/create_black_24dp+(1).svg" style={{width:'18px', height: '18px'}}></img>
                     </Link>
                     
                     <b className="RegisAndLoginLinks" > or </b>
                     <Link className="link" to="/login">
                         Login   
-                        <img src="https://alexstsorageblops.blob.core.windows.net/magic/person_outline_black_24dp.svg" style={{width:'18px', height: '18px'}}></img>
+                        <img src="https://web-design-kursak.s3.eu-west-2.amazonaws.com/person_outline_black_24dp+(1).svg" style={{width:'18px', height: '18px'}}></img>
                     </Link>
                     
                 </div>
@@ -241,19 +309,33 @@ function Main(){
                         }}
                     ></input>
                     <i id="fa-search" onClick={()=>getGadgetsByName(search)}>
-                        <img id="logo-search" src="https://alexstsorageblops.blob.core.windows.net/magic/search.svg"></img>
+                        <img id="logo-search" src="https://web-design-kursak.s3.eu-west-2.amazonaws.com/search.svg"></img>
                     </i>
                     <a id="clear-btn" onClick={()=>clearSearch()}>X</a>
+                </div>
+                <div id="purchases" onClick={()=>{
+                   if(window.sessionStorage.getItem('token')==null || window.sessionStorage.getItem('token')=='null')
+                   {   
+                       alert("You need to Login!")
+                   }
+                   else{
+                        getMyPurchase(); 
+                        setPurchasesFormInline('inline');
+                        // getG(); 
+
+                    }}} style={{ cursor: 'pointer', position: 'absolute', right: '130px'}}>
+                    <b className="link" id="purchases">History</b>
+                    <img src="https://web-design-kursak.s3.eu-west-2.amazonaws.com/shopping_bag_black_24dp.svg" style={{width:'18px', height: '18px'}}></img>
                 </div>
 
                 <div id="basket" onClick={()=>{if(basketCount!=0){setBasketFormInline('inline')}}} style={{ cursor: 'pointer', position: 'absolute', right: '70px'}}>
                     <b className="link" id="basket">{basketCount}</b>
-                    <img src="https://alexstsorageblops.blob.core.windows.net/magic/basket.svg" style={{width:'18px', height: '18px'}}></img>
+                    <img src="https://web-design-kursak.s3.eu-west-2.amazonaws.com/basket+(1).svg" style={{width:'18px', height: '18px'}}></img>
                 </div>
 
                 <div id="out" onClick={()=>getOut()} style={{ cursor: 'pointer'}}>
                     <b className="link" id="out" >Out   </b>
-                    <img src="https://alexstsorageblops.blob.core.windows.net/magic/logout_black_24dp.svg" style={{width:'18px', height: '18px'}}></img>
+                    <img src="https://web-design-kursak.s3.eu-west-2.amazonaws.com/logout_black_24dp+(1).svg" style={{width:'18px', height: '18px'}}></img>
                 </div>
                 
             </div>
@@ -263,13 +345,18 @@ function Main(){
                 basketFormInline={basketFormInline}
                 setBasketFormInline={setBasketFormInline}
                 refreshBasket={refreshBasket}
-
             ></BasketGadjeds>
+            <Purchases
+                purchasesFormInline={purchasesFormInline}
+                setPurchasesFormInline={setPurchasesFormInline}
+                purchases={purchases}
+                setPurchases={setPurchases}              
+            ></Purchases>
             <br></br>
             <div id="baner">
                 <section className='slider'>
-                    <img className='left-arrow' src="https://alexstsorageblops.blob.core.windows.net/magic/arrow_forward_ios_black_24dp.svg"onClick={prevSlide}></img>
-                    <img className='right-arrow'src="https://alexstsorageblops.blob.core.windows.net/magic/arrow_forward_ios_black_24dp.svg" onClick={nextSlide}></img>
+                    <img className='left-arrow' src="https://web-design-kursak.s3.eu-west-2.amazonaws.com/arrow_forward_ios_black_24dp.svg"onClick={prevSlide}></img>
+                    <img className='right-arrow'src="https://web-design-kursak.s3.eu-west-2.amazonaws.com/arrow_forward_ios_black_24dp.svg" onClick={nextSlide}></img>
                     {SliderData.map((slide, index) => {
                     return(
                         <div className={index === current ? 'slide active' : 'slide'} key={index}>
@@ -350,19 +437,19 @@ function Main(){
                     <p onClick={()=>copyNumber("0632334950")}>(063) 233 49 50</p>
                     <br></br>
                     <Link to="https://www.facebook.com/alex.black.one/">
-                        <img className="social-logo" style={{width: '10px', height:'20px'}} src="https://alexstsorageblops.blob.core.windows.net/magic/facebook.png" alt="normal"/>
+                        <img className="social-logo" style={{width: '10px', height:'20px'}} src="https://web-design-kursak.s3.eu-west-2.amazonaws.com/facebook.png" alt="normal"/>
                     </Link>
                     &nbsp;&nbsp;&nbsp;&nbsp;
                     <Link to="https://www.instagram.com/alexeycherniy/">
-                        <img className="social-logo" style={{width: '20px', height:'20px'}} src="https://alexstsorageblops.blob.core.windows.net/magic/instagram.png" alt="normal"/>
+                        <img className="social-logo" style={{width: '20px', height:'20px'}} src="https://web-design-kursak.s3.eu-west-2.amazonaws.com/instagram.png" alt="normal"/>
                      </Link>
                     &nbsp;&nbsp;&nbsp;&nbsp;
                     <Link to="https://www.tiktok.com/@alexeycherniy1">
-                        <img className="social-logo" style={{width: '15px', height:'20px'}} src="https://alexstsorageblops.blob.core.windows.net/magic/tiktok.png"/>
+                        <img className="social-logo" style={{width: '15px', height:'20px'}} src="https://web-design-kursak.s3.eu-west-2.amazonaws.com/tiktok.png"/>
                     </Link>
                     &nbsp;&nbsp;&nbsp;&nbsp;
                     <Link to="https://www.youtube.com/@AlexBlackOne1">
-                        <img className="social-logo" style={{width: '25px', height:'20px'}} src="https://alexstsorageblops.blob.core.windows.net/magic/youtube.png" alt="normal" />
+                        <img className="social-logo" style={{width: '25px', height:'20px'}} src="https://web-design-kursak.s3.eu-west-2.amazonaws.com/youtube.png" alt="normal" />
                     </Link>
                     <br></br>
                     <br></br>

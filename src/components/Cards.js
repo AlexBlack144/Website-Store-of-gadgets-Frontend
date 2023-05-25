@@ -25,9 +25,9 @@ const Cards=({gadgets, changeBasketCount, basket, baskeGadgets})=>{
         gadgets.map((item, index)=>(
             <div key={index} className="cart" id={item.id}>
                 <img className="img_gadget" src={item.image}></img>
-                <div className="cart_gadget">{item.name}</div>
+                <div className="cart_gadget"><b>{item.name}</b></div>
                 <div className="cart_gadget">{item.model}</div>
-                <div className="cart_gadget">{item.price}₴</div>
+                <div className="cart_gadget"><b>{item.price} ₴</b></div>
                 <button className="BuyBtn" onClick={()=>buyBtn(
                         item.id,
                         item.image,

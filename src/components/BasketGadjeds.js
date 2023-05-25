@@ -1,10 +1,11 @@
 import React from "react";
 import axios from "axios";
+import { Hosting } from '../components/Hosting.ts';
 import { useState, useEffect } from "react";
 
 
 const BasketGadjeds=({baskeGadgets, btnBasketDell, basketFormInline, setBasketFormInline, refreshBasket})=>{
-
+    const [host] = useState(new Hosting());
     function totalPrice(){
         let totPrice = 0;
         for (const item of baskeGadgets)
@@ -14,20 +15,20 @@ const BasketGadjeds=({baskeGadgets, btnBasketDell, basketFormInline, setBasketFo
         return totPrice;
     }
     function buyAllBasket(){
-        alert('Congratulations on your purchase!');
+        
 
         axios({
             method:'post',
-            url: "https://webapplicationclient20230302194755.azurewebsites.net/Gadget/BuyGadgets",
+            url: `https://${host.getHost()}/Gadget/BuyGadgets`,
             data: JSON.stringify(baskeGadgets),
             headers: {
                 'Accept': '*/*',
                 'Content-Type': 'application/json',
-                "Authorization": "Bearer " + window.sessionStorage.getItem('token')
+                "Authorization": "Bearer " + window.sessionStorage.getItem('token'),
             }
         })
         .then(data=>{
-            console.log(data);
+            alert('Congratulations on your purchase!');
             window.location.reload();
         })
     }

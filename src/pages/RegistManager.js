@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
 import { createElement, useState } from 'react';
+import { Hosting } from '../components/Hosting.ts';
 import axios from "axios";
 export default function RegistManager() {
 
+const [host] = useState(new Hosting());
 const [login, setLogin] = useState("");
 const [email, setEmail] = useState("");
 const [pass, setPass] = useState("");
@@ -10,7 +12,7 @@ const [pass2, setPass2] = useState("");
 
   function RegisterManager()
   {
-    if(login!="")
+    if(login!=""&& isNaN(parseFloat(login))==true)
     {
       if(email.includes('@')&& email.includes('.'))
       {
@@ -18,7 +20,7 @@ const [pass2, setPass2] = useState("");
         {
           axios({
             method:'post',
-            url: "https://webapplicationclient20230302194755.azurewebsites.net/api/Authentication/regManager",
+            url: `https://${host.getHost()}/api/Authentication/regManager`,
             data: {
                 "userName": login,
                 "password": pass,
@@ -38,7 +40,7 @@ const [pass2, setPass2] = useState("");
           {
             window.location.href='/login';
           }
-        })
+        }).catch(error => { alert("Errore")});
           
         }
         else{alert("Passwords not equals!")}

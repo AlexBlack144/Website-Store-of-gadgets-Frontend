@@ -247,7 +247,7 @@ color: white;
   transform: scale(1.08);
 }
 .end-page{
-  background-image: url("https://alexstsorageblops.blob.core.windows.net/magic/SL-092619-23740-28.jpg");
+  background-image: url("https://web-design-kursak.s3.eu-west-2.amazonaws.com/SL-092619-23740-28.jpg");
   background-size: 50%;
   background-color: #1b1b1b;
   display: flex;
@@ -282,12 +282,32 @@ color: white;
   {
     display: inline;
     position: absolute;
+    opacity: 0.9;
   }
-  
+  .hamburgerMenu .link{
+    color: #000000;
+    text-decoration: none;
+  }
+  .hamburgerMenu .link:hover{
+    color: #dacc50;
+    text-decoration: none;
+  }
+  .image{
+    width: 400px;
+    height: 200px;
+  }
+  .searchClass{
+    margin-left: 150px;
+  }
+  #form-search:hover,
+  #form-search:valid{
+  width: 250px;
+  cursor: pointer;
+  }
   .hamburger:hover .hamburgerMenu
   {
     display: inline;
-    background-color: lightgray;
+    background-color: rgb(136, 143, 238);
     width: 100px;
     height: 100vh;
     position: absolute;

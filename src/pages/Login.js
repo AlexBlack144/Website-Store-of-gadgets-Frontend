@@ -1,10 +1,12 @@
 import { Link } from "react-router-dom";
 import '../cssFiles/style_for_login_regist.css';
 import { createElement, useEffect, useState } from 'react';
+import { Hosting } from '../components/Hosting.ts';
 import axios from "axios";
 
 export default function Login() {
 let UserOrManager = document.getElementById('UserOrManager');
+const [host] = useState(new Hosting());
 const [login, setLogin] = useState("");
 const [pass, setPass] = useState("");
 
@@ -12,7 +14,7 @@ function Log()
 {
     axios({
         method:'post',
-        url: "https://webapplicationclient20230302194755.azurewebsites.net/api/Authentication/login",
+        url: `https://${host.getHost()}/api/Authentication/login`,
         data: {
             "userName": login,
             "password": pass

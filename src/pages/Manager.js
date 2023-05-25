@@ -1,5 +1,6 @@
 import { Link, Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { Hosting } from '../components/Hosting.ts';
 import '../cssFiles/style_for_manager.css';
 import Paginationee from "../components/Paginationee.js";
 import Slider from "@mui/material/Slider";
@@ -7,6 +8,8 @@ import axios from "axios";
 import React from "react";
 
 function Manager(){
+
+    const [host] = useState(new Hosting());
 
     const [nameCategoryNew, setNameCategoryNew] = useState('');
     const [nameNew, setNameNew] = useState('');
@@ -58,7 +61,7 @@ function Manager(){
         {
             axios({
                 method:'get',
-                url: "https://webapplicationclient20230302194755.azurewebsites.net/Gadget/GetGadgets",
+                url: `https://${host.getHost()}/Gadget/GetGadgets`,
                 headers: {
                     'Accept': '*/*',
                     'Content-Type': 'application/json'
@@ -79,7 +82,7 @@ function Manager(){
         {
             axios({
                 method:'get',
-                url: "https://webapplicationclient20230302194755.azurewebsites.net/Category/GetCategorys",
+                url: `https://${host.getHost()}/Category/GetCategorys`,
                 headers: {
                     'Accept': '*/*',
                     'Content-Type': 'application/json'
@@ -98,7 +101,7 @@ function Manager(){
         setForm2Inline('none');
         axios({
             method:'get',
-            url: `https://webapplicationclient20230302194755.azurewebsites.net/Gadget/GetGadgetbyId_Category?id=${id}`,
+            url: `https://${host.getHost()}/Gadget/GetGadgetbyId_Category?id=${id}`,
             headers: {
                 'Accept': '*/*',
                 'Content-Type': 'application/json'
@@ -130,7 +133,7 @@ function Manager(){
         const formData = new FormData();
         formData.append("file", file);
 
-        await axios.post('https://webapplicationclient20230302194755.azurewebsites.net/Gadget/UploadImg', formData, 
+        await axios.post(`https://${host.getHost()}/Gadget/UploadImg`, formData, 
         { 
             headers: 
             { 
@@ -138,7 +141,8 @@ function Manager(){
                 "Authorization": "Bearer " + window.sessionStorage.getItem('token')
             } 
         }) 
-        .then(data => { 
+        .then(data => {
+            console.log(data.data); 
             addGadget(data.data)
         })
         .catch(error => { console.log(error.data)});
@@ -156,8 +160,7 @@ function Manager(){
         };
         axios({
             method:'post',
-            url: "https://webapplicationclient20230302194755.azurewebsites.net/Gadget/AddGadget",
-            //url: "https://localhost:7020/Gadget/AddGadget",
+            url: `https://${host.getHost()}/Gadget/AddGadget`,
             data: JSON.stringify(new_gadget),
             dataType: "dataType",
             headers: {
@@ -175,7 +178,7 @@ function Manager(){
         if (window.confirm('Are you sure you want to delete?')) {
             axios({
                 method:'post',
-                url: "https://webapplicationclient20230302194755.azurewebsites.net/Gadget/RemoveGadgetbyId",
+                url: `https://${host.getHost()}/Gadget/RemoveGadgetbyId`,
                 data: JSON.stringify(id),
                 dataType: "dataType",
                 headers: {
@@ -197,7 +200,7 @@ function Manager(){
             const formData = new FormData();
             formData.append("file", file);
 
-            await axios.post('https://webapplicationclient20230302194755.azurewebsites.net/Gadget/UploadImg', formData, 
+            await axios.post(`https://${host.getHost()}/Gadget/UploadImg`, formData, 
             { 
                 headers: 
                 { 
@@ -230,7 +233,7 @@ function Manager(){
         };
         axios({
             method:'post',
-            url: "https://webapplicationclient20230302194755.azurewebsites.net/Gadget/UpdateGadgetbyId",
+            url: `https://${host.getHost()}/Gadget/UpdateGadgetbyId`,
             data: JSON.stringify(update_gadget),
             headers: {
                 'Accept': '*/*',
@@ -266,7 +269,7 @@ function Manager(){
         }
         axios({
             method:'post',
-            url: "https://webapplicationclient20230302194755.azurewebsites.net/Category/AddCategorys",
+            url: `https://${host.getHost()}/Category/AddCategorys`,
             data: JSON.stringify(new_category),
             dataType: "dataType",
             headers: {
@@ -284,7 +287,7 @@ function Manager(){
         {
             axios({
                 method:'post',
-                url: "https://webapplicationclient20230302194755.azurewebsites.net/Category/RemoveCategorybyId",
+                url: `https://${host.getHost()}/Category/RemoveCategorybyId`,
                 data: JSON.stringify(id),
                 dataType: "dataType",
                 headers: {
@@ -317,7 +320,7 @@ function Manager(){
         console.log(filter_gadget)
         axios({
             method:'post',
-            url: "https://webapplicationclient20230302194755.azurewebsites.net/Gadget/GetGadgetFilter",
+            url: `https://${host.getHost()}/Gadget/GetGadgetFilter`,
             data: JSON.stringify(filter_gadget),
             dataType: "dataType",
             headers: {
@@ -348,7 +351,7 @@ function Manager(){
     {
         axios({
             method:'get',
-            url: `https://webapplicationclient20230302194755.azurewebsites.net/Gadget/GetGadgetbyName?name=${name}`,
+            url: `https://${host.getHost()}/Gadget/GetGadgetbyName?name=${name}`,
             headers: {
                 'Accept': '*/*',
                 'Content-Type': 'application/json'
@@ -369,13 +372,13 @@ function Manager(){
                 <div>
                     <Link className="link" to="/registManager">
                         Regist Manager 
-                        <img src="https://alexstsorageblops.blob.core.windows.net/magic/create_black_24dp.svg" style={{width:'18px', height: '18px'}} alt="React Logo"></img>
+                        <img src="https://web-design-kursak.s3.eu-west-2.amazonaws.com/create_black_24dp+(1).svg" style={{width:'18px', height: '18px'}} alt="React Logo"></img>
                     </Link>
                     
                     <b className="RegisAndLoginLinks" > or </b>
                     <Link className="link" to="/login">
                         Login   
-                        <img src="https://alexstsorageblops.blob.core.windows.net/magic/person_outline_black_24dp.svg" style={{width:'18px', height: '18px'}} alt="React Logo"></img>
+                        <img src="https://web-design-kursak.s3.eu-west-2.amazonaws.com/person_outline_black_24dp+(1).svg" style={{width:'18px', height: '18px'}} alt="React Logo"></img>
                     </Link>
                     
                 </div>
@@ -389,13 +392,13 @@ function Manager(){
                         }}
                     ></input>
                     <i id="fa-search" onClick={()=>getGadgetsByName(search)}>
-                        <img id="logo-search" src="https://alexstsorageblops.blob.core.windows.net/magic/search.svg"></img>
+                        <img id="logo-search" src="https://web-design-kursak.s3.eu-west-2.amazonaws.com/search.svg"></img>
                     </i>
                     <a id="clear-btn" onClick={()=>clearSearch()}>X</a>
                 </div>
                 <div onClick={()=>getOut()} style={{ cursor: 'pointer'}}>
                     <b className="link" id="out" >Out   </b>
-                    <img src="https://alexstsorageblops.blob.core.windows.net/magic/logout_black_24dp.svg" style={{width:'18px', height: '18px'}} alt="React Logo"></img>
+                    <img src="https://web-design-kursak.s3.eu-west-2.amazonaws.com/logout_black_24dp+(1).svg" style={{width:'18px', height: '18px'}} alt="React Logo"></img>
                 </div>  
             </div>
             <br></br>

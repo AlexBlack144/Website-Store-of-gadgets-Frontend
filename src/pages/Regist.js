@@ -2,8 +2,10 @@ import { Link } from "react-router-dom";
 import { createElement, useState } from 'react';
 import axios from "axios";
 import { fontSize } from "@mui/system";
+import { Hosting } from '../components/Hosting.ts';
 export default function Regist() {
 
+const [host] = useState(new Hosting());
 const [login, setLogin] = useState("");
 const [email, setEmail] = useState("");
 const [pass, setPass] = useState("");
@@ -11,15 +13,16 @@ const [pass2, setPass2] = useState("");
 
   function Register()
   {
-    if(login!="")
+    if(login!=""&& isNaN(parseFloat(login))==true)
     {
+     
       if(email.includes('@')&& email.includes('.'))
       {
         if(pass==pass2&&pass!="")
         {
           axios({
             method:'post',
-            url: "https://webapplicationclient20230302194755.azurewebsites.net/api/Authentication/regUser",
+            url: `https://${host.getHost()}/api/Authentication/regUser`,
             data: {
                 "userName": login,
                 "password": pass,
