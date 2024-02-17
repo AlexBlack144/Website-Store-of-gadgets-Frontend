@@ -1,0 +1,100 @@
+.gadget_characteristic{
+    text-align: center;
+    margin-top: 10px;
+    font-size: 22px;
+    color: #000000;
+    font-family: Arial, Helvetica, sans-serif;    
+}
+.gadget_description{
+    margin-top: 10%;
+    width: 40%;      
+}
+.img_characteristic{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;   
+}
+#Like{
+    border-width: 1px;
+    border-radius: 25px;
+    font-size: 24px;
+    width: 90px;
+    height: 60px;
+}
+#Dislike{
+    border-width: 1px;
+    border-radius: 25px;
+    font-size: 24px;
+    width: 90px;
+    height: 60px
+}
+#commentForm{
+    display: flex;
+    align-items: center;
+    flex-flow: column wrap;
+}
+.commentBox > h3{
+    font-family: Arial, Helvetica, sans-serif;  
+}
+.commentBox > textarea{
+    padding: 10px;
+    font-family: Arial, Helvetica, sans-serif;     
+    width: 1000px;
+    height: 25px;
+    background-color: rgba(255, 255, 255, 0.466);
+    border-radius: 10px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgb(109, 109, 109);
+}
+.comments{
+    margin-bottom: 20px;
+    border-style: solid;
+    border-radius: 25px;
+    border-width: 1px;
+    background-color: rgba(255, 255, 255, 0.507);
+    width: 1000px;
+    height: 100px;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content:space-between;  
+}
+.commentNameDate{
+    margin-top: 10px;
+    margin-left: 10px;
+    width: 200px;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content:space-around;
+          
+}
+.comment{
+    margin-right: 50%;
+    margin-top: 50px;
+}
+.SubmitBtn{
+    
+    font-size: 16px;
+    border-radius: 15px;
+    border-width: 1px;
+    border-color: rgb(201, 201, 201);
+    background-color: rgb(245, 245, 245);
+    width: 80px;
+    height: 30px;
+    margin-top: 10px;
+}
+.DellBtn{
+    width: 30px;
+    height: 30px;
+    border-radius: 15px;
+    text-align: center;
+    color: aliceblue;
+    background-color: rgb(0, 0, 0);
+    border: none;
+}
+.DellBtn:hover{
+    color: rgb(2, 2, 2);
+    background-color: rgb(250, 250, 250);
+    border-style: solid;
+    border-width: 1px;
+}

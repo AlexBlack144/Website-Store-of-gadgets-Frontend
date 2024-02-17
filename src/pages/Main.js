@@ -7,6 +7,7 @@ import { useClipboard } from 'use-clipboard-copy';
 import { myPurchases } from '../components/myPurchases.ts';
 
 import '../cssFiles/style_main.css';
+import '../cssFiles/style_logo_text.css';
 
 import React from "react";
 import axios from "axios";
@@ -39,7 +40,7 @@ function Main(){
     const [current, setCurrent] = useState(0);
     const [purchasesFormInline, setPurchasesFormInline] = useState('none');
     const [purchases,setPurchases] = useState([]);
-
+    
     const paginate = pageNumber => setCurrentPage(pageNumber)
     const nextSlide = () => {setCurrent(current === length - 1 ? 0 : current + 1);};
     const prevSlide = () => {setCurrent(current === 0 ? length - 1 : current - 1);};
@@ -185,26 +186,30 @@ function Main(){
        clipboard.copy(copy);
        alert('Сopied: '+copy);
     }
-    function basket(id, img, name, model, price, quantity, sold, status, idCategory){  
-        baskeGadgets.push(new myBasketGadjets(id, img, name, model, price, quantity, sold, status, idCategory, 1))
+    function basket(id, img, name, description, model, price, quantity, sold, status, idCategory){  
+        baskeGadgets.push(new myBasketGadjets(id, img, name, description, model, price, quantity, sold, status, idCategory, 1))
     }
     function btnBasketDell(id){
         setBaskeGadgets(baskeGadgets.filter(item => item.id != id));
+        
         if(basketCount==1)
         {
             setBasketCount(basketCount-1);
             setBasketFormInline('none');
+            localStorage.setItem('basketGadgets', JSON.stringify([]));
         }
         else{
             setBasketCount(basketCount-1);
+            setToLocalStorageGadgets(baskeGadgets.filter(item => item.id != id));
         }
     }
     function changeBasketCount(Count){
         setBasketCount(basketCount+Count);
     }
     function refreshBasket(){
-        baskeGadgets.push(new myBasketGadjets(999999, "image", "name", "model", 0, 0, 0, "status", 1))
+        baskeGadgets.push(new myBasketGadjets(999999, "image", "name", "description","model", 0, 0, 0, "status", 1))
         setBaskeGadgets(baskeGadgets.filter(item => item.id != 999999));
+        setToLocalStorageGadgets(baskeGadgets.filter(item => item.id != 999999));
     }
     function getMyPurchase(){
       
@@ -222,6 +227,10 @@ function Main(){
             setPurchases(data.data);
         });
     }
+    function setToLocalStorageGadgets(baskeGadgets){
+        localStorage.setItem('basketGadgets', JSON.stringify(baskeGadgets));
+        console.log(baskeGadgets.map((item, index)=>(item.id)).length);
+    }
     return(
     <div className="App1">
         <div className="App-header1">
@@ -231,7 +240,7 @@ function Main(){
                         <Link className="link" to="/regist">
                             Regist  
                             <img src="https://web-design-kursak.s3.eu-west-2.amazonaws.com/create_black_24dp+(1).svg" style={{width:'18px', height: '18px'}}></img>
-                            </Link>
+                        </Link>
                         <Link className="link" to="/login">
                             Login   
                             <img src="https://web-design-kursak.s3.eu-west-2.amazonaws.com/person_outline_black_24dp+(1).svg" style={{width:'18px', height: '18px'}}></img>
@@ -288,13 +297,13 @@ function Main(){
             <div id="DivRegisAndLoginLinks">
                 <div>
                     <Link className="link" to="/regist">
-                        Regist  
+                        <b>Regist</b>  
                         <img src="https://web-design-kursak.s3.eu-west-2.amazonaws.com/create_black_24dp+(1).svg" style={{width:'18px', height: '18px'}}></img>
                     </Link>
                     
                     <b className="RegisAndLoginLinks" > or </b>
                     <Link className="link" to="/login">
-                        Login   
+                        <b>Login</b>   
                         <img src="https://web-design-kursak.s3.eu-west-2.amazonaws.com/person_outline_black_24dp+(1).svg" style={{width:'18px', height: '18px'}}></img>
                     </Link>
                     
@@ -345,6 +354,7 @@ function Main(){
                 basketFormInline={basketFormInline}
                 setBasketFormInline={setBasketFormInline}
                 refreshBasket={refreshBasket}
+                setToLocalStorageGadgets={setToLocalStorageGadgets}
             ></BasketGadjeds>
             <Purchases
                 purchasesFormInline={purchasesFormInline}
@@ -366,8 +376,15 @@ function Main(){
                 </section>
             </div>
             <br></br>
-            <div style={{textAlign: 'center'}}>
-                <span className="top" onClick={()=>(window.location.reload())}>STORE OF GADGETS</span>
+            <br></br>
+            <br></br>
+            <div style={{textAlign: 'center', marginTop: '50px'}}>
+                {/*<span className="top" onClick={()=>(window.location.reload())}>ISTORE</span>*/}
+                <div className="main-container"onClick={()=>(window.location.reload())}>
+                    <div class="first-container share">
+                        <h1><span id="one">I</span><span>S</span><span>T</span><span>O</span> <span>R</span><span>E</span></h1>
+                    </div>
+                </div> 
             </div>
             <br></br>
             <div className="container-menu" id="container" style={{cursor: 'pointer'}}>
@@ -397,7 +414,7 @@ function Main(){
                     {brandlFilter()}
                     {
                         uniqueNames.map((item, index)=>(
-                            <div key={index} style={{marginBottom: '10px'}}>
+                            <div className="brandFilter" key={index} style={{marginBottom: '10px'}}>
                                <input type="checkbox" className="checkboxes" id={item}></input>
                                 {item}
                             </div>))
@@ -413,6 +430,7 @@ function Main(){
                         changeBasketCount={changeBasketCount}
                         basket={basket}
                         baskeGadgets={baskeGadgets}
+                        setToLocalStorageGadgets={setToLocalStorageGadgets}
                     ></Cards>
                 </div>
             </div>
@@ -428,7 +446,12 @@ function Main(){
             <div className="end-page">
                 <div className="numbers-and-socials-links">
                     <br></br>
-                    <span className="top" onClick={()=>(window.location.reload())}>STORE OF GADGETS</span>
+                    {/*<span className="top" onClick={()=>(window.location.reload())}>STORE OF GADGETS</span>*/}
+                    <div className="main-container2"onClick={()=>(window.location.reload())}>
+                        <div class="first-container share">
+                            <h1 style={{fontSize:'2vw'}}><span id="one">I</span><span>S</span><span>T</span><span>O</span> <span>R</span><span>E</span></h1>
+                        </div>
+                    </div> 
                     <br></br>
                     <h3>Contacts:</h3>
                     <p onClick={()=>copyNumber("0800210186")}>0 800 210 186</p>

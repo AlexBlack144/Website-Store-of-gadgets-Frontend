@@ -1,7 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
 body{
-  background-color: #f0e7ff;
+  /* \
+  background-color: #ffffff;
   background-image: url("https://web-design-kursak.s3.eu-west-2.amazonaws.com/axiom-pattern.png");
+  */
+ 
+  background-image: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.671),
+    rgb(185, 185, 185)
+  ), url("https://web-design-kursak.s3.eu-west-2.amazonaws.com/apple-logo.png");
+  
+  background-repeat: no-repeat;
+ background-position: top;
+  
+   
 }
 .App {
   text-align: center;

@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
-import '../cssFiles/style_for_login_regist.css';
 import { createElement, useEffect, useState } from 'react';
 import { Hosting } from '../components/Hosting.ts';
+import {EyeInvisibleOutlined, EyeOutlined} from "@ant-design/icons";
+import '../cssFiles/style_for_login_regist.css';
 import axios from "axios";
 
 export default function Login() {
@@ -9,6 +10,7 @@ let UserOrManager = document.getElementById('UserOrManager');
 const [host] = useState(new Hosting());
 const [login, setLogin] = useState("");
 const [pass, setPass] = useState("");
+const [visible, setVisible] = useState(false);
 
 function Log()
 {
@@ -59,8 +61,8 @@ return (
                 <br></br>
 
                 <label>Password:</label>
-                <input className="login_pass" onChange={(e)=>{setPass(e.target.value)}} id="pass" type='password'></input>
-
+                <input className="login_pass" onChange={(e)=>{setPass(e.target.value)}} id="pass" type={visible ? "text" : "password"}></input>
+                <div id="eye" onClick={()=>setVisible(!visible)}>{ visible ? <EyeOutlined/>:<EyeInvisibleOutlined/>}</div>
                 <br></br>
 
                 <select id="UserOrManager">
@@ -78,6 +80,5 @@ return (
         </div>
       </header>
     </div>
-    
     );
 }

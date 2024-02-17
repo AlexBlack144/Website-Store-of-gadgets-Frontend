@@ -4,7 +4,7 @@ import { Hosting } from '../components/Hosting.ts';
 import { useState, useEffect } from "react";
 
 
-const BasketGadjeds=({baskeGadgets, btnBasketDell, basketFormInline, setBasketFormInline, refreshBasket})=>{
+const BasketGadjeds=({baskeGadgets, btnBasketDell, basketFormInline, setBasketFormInline, refreshBasket, setToLocalStorageGadgets})=>{
     const [host] = useState(new Hosting());
     function totalPrice(){
         let totPrice = 0;
@@ -29,7 +29,9 @@ const BasketGadjeds=({baskeGadgets, btnBasketDell, basketFormInline, setBasketFo
         })
         .then(data=>{
             alert('Congratulations on your purchase!');
+            localStorage.setItem('basketGadgets', JSON.stringify([]));
             window.location.reload();
+            
         })
     }
     return(

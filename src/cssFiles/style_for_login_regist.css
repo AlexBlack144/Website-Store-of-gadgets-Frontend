@@ -5,16 +5,16 @@
     font-size: 16px;
     border-radius: 15px;
     border-width: 1px;
-    border-color: #c5c211;
-    background-color: #c5c211;
+    border-color: #bdbdbd;
+    background-color: #fcfcfc;
     width: 100px;
     height: 30px;
     margin-top: 10px;
     margin-left: 50px; 
 }
 button:hover{
-    border-color: #9f68cc;
-    background-color: #9f68cc;
+    border-color: #b1b1b1;
+    background-color: #000000;
     color: white;
   }
 #form_login{
@@ -30,9 +30,10 @@ button:hover{
     border-style: solid;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 14px;
+    
 }
 #form_login:hover{
-    box-shadow: 0px 0px 5px #757575;
+    box-shadow: 0px 0px 5px #ffffff;
   }
 #container_for_login_form{
     display: flex;
@@ -49,4 +50,31 @@ h1{
 }
 .login_pass{
     margin-top: 5px;
+}
+#form_login> a{
+ color: white;
+}
+#form_login> a:hover{
+    color: rgb(155, 155, 155);
+}
+.App-header>a{
+    color: white;   
+}
+#eye{
+    position: absolute;
+    margin-left: 175px;
+    margin-bottom: 45px;
+    color: #000000;
+}
+#eye2{
+    position: absolute;
+    margin-left: 175px;
+    margin-top: 40px;
+    color: #000000;
+}
+#eye3{
+    position: absolute;
+    margin-left: 175px;
+    margin-top: 152px;
+    color: #000000;
 }

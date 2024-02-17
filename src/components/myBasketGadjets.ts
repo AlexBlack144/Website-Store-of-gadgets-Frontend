@@ -2,6 +2,7 @@ export class myBasketGadjets{
     private id: Number;
     private image: String;
     private name: String;
+    private description: String;
     private model: String;
     private price: Number;
     private quantity: Number;
@@ -10,10 +11,11 @@ export class myBasketGadjets{
     private idCategory: Number;
     private count: Number;
  
-    constructor(id, image, name, model, price, quantity, sold, status, idCategory, count){
+    constructor(id, image, name, description, model, price, quantity, sold, status, idCategory, count){
          this.id = id;
          this.image = image;
          this.name = name;
+         this.description = description;
          this.model = model;
          this.price = price;
          this.quantity = quantity;
@@ -22,9 +24,6 @@ export class myBasketGadjets{
          this.idCategory = idCategory;
          this.count = count;
      }
-     getCount(): Number{
-          return this.count;
-      }
      getId(): Number{
          return this.id;
      }
@@ -33,6 +32,9 @@ export class myBasketGadjets{
      }
      getName(): String{
          return this.name;
+     }
+     getDescription(): String{
+          return this.description;
      }
      getModel(): String{
      return this.model;
@@ -51,5 +53,8 @@ export class myBasketGadjets{
      }
      getIdCategory(): Number{
           return this.idCategory;
+     }
+     getCount(): Number{
+          return this.count;
      }
  }

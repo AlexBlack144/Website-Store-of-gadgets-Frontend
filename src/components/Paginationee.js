@@ -13,7 +13,7 @@ const Paginationee = ({cardsPerPage, totalCards,  paginate})=>{
     }
 
     return(
-        <Pagination 
+        <Pagination className="pagin" 
             count={pageNumbers.length} 
             page={paginate(page)} 
             onChange={handleChange}

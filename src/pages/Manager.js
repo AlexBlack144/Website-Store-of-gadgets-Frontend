@@ -2,6 +2,7 @@ import { Link, Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Hosting } from '../components/Hosting.ts';
 import '../cssFiles/style_for_manager.css';
+import '../cssFiles/style_logo_text.css';
 import Paginationee from "../components/Paginationee.js";
 import Slider from "@mui/material/Slider";
 import axios from "axios";
@@ -13,6 +14,7 @@ function Manager(){
 
     const [nameCategoryNew, setNameCategoryNew] = useState('');
     const [nameNew, setNameNew] = useState('');
+    const [descriptionNew, setDescriptionNew] = useState('');
     const [modelNew, setModelNew] = useState('');
     const [priceNew, setPriceNew] = useState('');
     const [quantityNew, setQuantityNew] = useState('');
@@ -22,7 +24,8 @@ function Manager(){
     const [idUpdate, setIdUpdate] = useState(0);
     const [imgUpdate, setImgUpdate] = useState('');
     const [nameUpdate, setNameUpdate] = useState('');
-    const [modelUpdate, setModelUpdate] = useState('');
+    const [descriptionUpdate, setDescriptionUpdate] = useState('');
+    const [modelUpdate, setModelUpdate] = useState(''); 
     const [priceUpdate, setPriceUpdate] = useState('');
     const [quantityUpdate, setQuantityUpdate] = useState('');
     const [soldUpdate, setSoldUpdate] = useState('');
@@ -116,12 +119,13 @@ function Manager(){
     function btnFormAddGadget(){
         setForm1Inline('inline');
     }
-    function btnFormUpdate(id, img, name, model, price, quantity, sold, status, idCategory){
+    function btnFormUpdate(id, img, name, description, model, price, quantity, sold, status, idCategory){
         window.scrollTo(0, 0);
         setIdUpdate(id);
         setImgUpdate(img);
         setNameUpdate(name);
         setModelUpdate(model);
+        setDescriptionUpdate(description);
         setPriceUpdate(price);
         setQuantityUpdate(quantity);
         setSoldUpdate(sold);
@@ -152,6 +156,7 @@ function Manager(){
         let new_gadget = {
             Image: img,
             Name: nameNew,
+            Description: descriptionNew,
             Model: modelNew,
             Price: parseFloat(priceNew),
             Quantity: parseInt(quantityNew),
@@ -224,6 +229,7 @@ function Manager(){
             Id: parseInt(idUpdate),
             Image: img,
             Name: nameUpdate,
+            Description: descriptionUpdate,
             Model: modelUpdate,
             Price: parseFloat(priceUpdate),
             Quantity: parseInt(quantityUpdate),
@@ -403,8 +409,16 @@ function Manager(){
             </div>
             <br></br>
             <div style={{textAlign: 'center'}}>
-                <span className="top" onClick={()=>window.location.href='/'}>STORE OF GADGETS</span>
+            <div className="main-container3"onClick={()=>(window.location.reload())}>
+                    <div class="first-container share">
+                        <h1><span id="one">I</span><span>S</span><span>T</span><span>O</span> <span>R</span><span>E</span></h1>
+                    </div>
+                </div> 
             </div>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
             <br></br>
             <div className="container-menu" id="container"  style={{cursor: 'pointer'}}>
                 <div className = "name_category" style={{ borderBlockColor: 'yellow'}} onClick={() =>btnFormAddCategory()} >Add Category</div>
@@ -489,6 +503,8 @@ function Manager(){
                             ))
                         }
                     </select>
+                    <label>Description:</label>
+                    <textarea className="new_gadget" id="description_update_gadget" value={descriptionUpdate} onChange={(e)=>{setDescriptionUpdate(e.target.value)}}></textarea>
                     <br></br>
                     <br></br>
                     <button className="btn_gadget" id="update_gadget" onClick={() =>btnUpdateGadget()}>Update</button>
@@ -563,7 +579,8 @@ function Manager(){
                                     <button className = "Btn" id = "UpdateBtn" onClick={()=>btnFormUpdate(
                                             item.id, 
                                             item.image, 
-                                            item.name, 
+                                            item.name,
+                                            item.description, 
                                             item.model, 
                                             item.price, 
                                             item.quantity, 

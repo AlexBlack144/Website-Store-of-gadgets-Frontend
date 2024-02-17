@@ -3,6 +3,7 @@ import { createElement, useState } from 'react';
 import axios from "axios";
 import { fontSize } from "@mui/system";
 import { Hosting } from '../components/Hosting.ts';
+import {EyeInvisibleOutlined, EyeOutlined} from "@ant-design/icons";
 export default function Regist() {
 
 const [host] = useState(new Hosting());
@@ -10,9 +11,11 @@ const [login, setLogin] = useState("");
 const [email, setEmail] = useState("");
 const [pass, setPass] = useState("");
 const [pass2, setPass2] = useState("");
+const [visible, setVisible] = useState(false);
 
   function Register()
   {
+    
     if(login!=""&& isNaN(parseFloat(login))==true)
     {
      
@@ -20,6 +23,7 @@ const [pass2, setPass2] = useState("");
       {
         if(pass==pass2&&pass!="")
         {
+         
           axios({
             method:'post',
             url: `https://${host.getHost()}/api/Authentication/regUser`,
@@ -76,10 +80,12 @@ const [pass2, setPass2] = useState("");
                   <p>Use !_#</p>
                   <p>Min 6 characters</p>
                 </div>
-                <input className="Input" onChange={(e)=>{setPass(e.target.value)}} id="pass" type='password'></input>
+                <input className="login_pass" onChange={(e)=>{setPass(e.target.value)}} id="pass" type={visible ? "text" : "password"}></input>
+                <div id="eye2" onClick={()=>setVisible(!visible)}>{ visible ? <EyeOutlined/>:<EyeInvisibleOutlined/>}</div>
                 <br></br>
                 <label>Password again:</label>
-                <input className="Input" onChange={(e)=>{setPass2(e.target.value)}} id="pass2" type='password'></input>
+                <input className="login_pass" onChange={(e)=>{setPass2(e.target.value)}} id="pass" type={visible ? "text" : "password"}></input>
+                <div id="eye3" onClick={()=>setVisible(!visible)}>{ visible ? <EyeOutlined/>:<EyeInvisibleOutlined/>}</div>
                 <br></br>
                 <button id='Btn' className="btn_login_regist" onClick={Register}> Register </button>
                 <br></br>
