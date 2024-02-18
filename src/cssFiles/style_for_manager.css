@@ -2,13 +2,15 @@
     display: flex;
     flex-flow: row wrap;
     justify-content: space-evenly;
-    background-color: rgba(0, 0, 0, 0.712);
+    background-color: rgba(0, 0, 0, 0.493);
+    border-radius: 20px;
 }
 table{
     text-align: center; 
     font-family: Arial, Helvetica, sans-serif;
     border-collapse: collapse;
     width: 100%;
+    
 }
 th{
     color: #ffffff;
@@ -44,7 +46,9 @@ td, th{
     display: flex;
     flex-flow: row wrap;
     justify-content: space-evenly;
-    background-color: #ffffff;
+    background-color: #ffffffe7;
+    border-radius: 20px;
+    
 }
 #form1{
     
@@ -54,6 +58,8 @@ td, th{
     border-color: rgb(163, 163, 163);
     border-width: 1px;
     border-style: solid;
+    border-radius: 20px;
+    
 }
 #form1:hover{
     box-shadow: 0px 0px 5px #757575;
@@ -66,6 +72,7 @@ td, th{
     border-color: rgb(163, 163, 163);
     border-width: 1px;
     border-style: solid;
+    border-radius: 20px;
 }
 #form2:hover{
     box-shadow: 0px 0px 5px #757575;
@@ -74,6 +81,7 @@ td, th{
     margin-top: 10px;
     font-size: 18px;
     color: #f0f8fff5;
+    
 }
 .img_gadget-table{
     width: 100%;

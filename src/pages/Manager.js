@@ -409,7 +409,7 @@ function Manager(){
             </div>
             <br></br>
             <div style={{textAlign: 'center'}}>
-            <div className="main-container3"onClick={()=>(window.location.reload())}>
+            <div className="main-container3"onClick={()=>(window.location.href='/')}>
                     <div class="first-container share">
                         <h1><span id="one">I</span><span>S</span><span>T</span><span>O</span> <span>R</span><span>E</span></h1>
                     </div>
@@ -424,6 +424,7 @@ function Manager(){
                 <div className = "name_category" style={{ borderBlockColor: 'yellow'}} onClick={() =>btnFormAddCategory()} >Add Category</div>
                 <div className = "name_category" style={{ borderBlockColor: 'yellow'}} onClick={() =>btnFormAddGadget()} >Add Gadget</div>
                 <div className = "name_category" style={{ borderBlockColor: 'yellow'}} onClick={() => window.location.reload()} >Show All</div>
+                <div className = "name_category" style={{ borderBlockColor: 'yellow'}} onClick={() => window.location.href='/History'} >Purchase history</div>
             </div>
             <br></br>
             <div className="container-menu" id="container"  style={{cursor: 'pointer'}}>
