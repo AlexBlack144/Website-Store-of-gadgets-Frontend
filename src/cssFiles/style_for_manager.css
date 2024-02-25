@@ -51,7 +51,6 @@ td, th{
     
 }
 #form1{
-    
     flex-flow: column wrap;
     justify-content: center;
     width: 200px; 
@@ -59,7 +58,6 @@ td, th{
     border-width: 1px;
     border-style: solid;
     border-radius: 20px;
-    
 }
 #form1:hover{
     box-shadow: 0px 0px 5px #757575;
@@ -155,4 +153,39 @@ input[type=file]::file-selector-button {
     font-size: 14px;
     font-family: Arial, Helvetica, sans-serif;   
 }
+#banner{
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: center;
 
+}
+#banner>button{
+    position: absolute;
+    margin-left: 101%;
+    margin-bottom: 40%;
+}
+#banner>img:hover{
+    box-shadow: 0px 0px 20px #080808;
+    cursor: pointer;
+}
+#IdBanner{
+    position: absolute;
+    text-align: center;
+    margin-top: 45%;
+    margin-left: 50%;
+    width: 25px;
+    height: 25px;
+    color: rgb(0, 0, 0);
+    background-color: rgb(255, 255, 255);
+    border-style: solid;
+    border-color: #000000;
+    border-width: 1px;
+    border-radius: 15px;
+}
+.oldGadgetName:hover{
+    cursor: pointer;
+    color: rgb(141, 141, 141);
+}
+tr:hover{
+    background-color: #9b9a9a;
+}

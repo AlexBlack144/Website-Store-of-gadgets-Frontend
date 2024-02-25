@@ -1,13 +1,12 @@
 import { Link, Outlet } from "react-router-dom";
-import { SliderData } from '../components/SliderData.js';
 import { myBasketGadjets } from '../components/myBasketGadjets.ts';
 import { Hosting } from '../components/Hosting.ts';
 import { useEffect, useState } from "react";
 import { useClipboard } from 'use-clipboard-copy';
 import { myPurchases } from '../components/myPurchases.ts';
-
 import '../cssFiles/style_main.css';
 import '../cssFiles/style_logo_text.css';
+import 'react-credit-cards-2/dist/es/styles-compiled.css';
 
 import React from "react";
 import axios from "axios";
@@ -17,6 +16,7 @@ import Cards from "../components/Cards.js";
 import Paginationee from "../components/Paginationee.js";
 import BasketGadjeds  from '../components/BasketGadjeds.js';
 import Purchases from '../components/Purchases.js';
+import CrediCad from '../components/CreditCard.js';
 
 function Main(){
 
@@ -40,17 +40,34 @@ function Main(){
     const [current, setCurrent] = useState(0);
     const [purchasesFormInline, setPurchasesFormInline] = useState('none');
     const [purchases,setPurchases] = useState([]);
-    
+    const [banners, setBanners] = useState([]);
+    const [creditFormInline, setCreditFormInline] = useState('none');
+    const [allPrice,setAllPrice] = useState(0);
+
     const paginate = pageNumber => setCurrentPage(pageNumber)
+    
     const nextSlide = () => {setCurrent(current === length - 1 ? 0 : current + 1);};
     const prevSlide = () => {setCurrent(current === 0 ? length - 1 : current - 1);};
-    
-    if (!Array.isArray(SliderData) || SliderData.length <= 0) {return null;}
+    useEffect(() => {
+        getBanners();
+    },[]);
 
-    const length = SliderData.length;
+    const [state, setState] = useState({
+        number: '',
+        expiry: '',
+        cvc: '',
+        name: '',
+        focus: '',
+    });
+
+    if (!Array.isArray(banners) || banners.length <= 0) {return null;}
+    const length = banners.length;
+
     const lastCardIndex = currentPage * cardsPerPage;
     const firstCardIndex = lastCardIndex - cardsPerPage;
     const currentCard = gadgets.slice(firstCardIndex, lastCardIndex);
+
+    
 
     function handleChanges(event, newValue) {
       setRange(newValue);
@@ -62,7 +79,8 @@ function Main(){
         }
         else{
             
-            console.log(window.sessionStorage.getItem('token'));
+           
+            localStorage.setItem('basketGadgets', JSON.stringify([]));
             window.sessionStorage.setItem('token', null)
             window.location.href = '/login';
         }
@@ -106,6 +124,11 @@ function Main(){
     }
     function getGadgetsByName(name)
     {
+        window.scrollTo({
+            top: 800,
+            left: 0,
+            behavior: 'smooth',
+        });
         axios({
             method:'get',
             url: `https://${host.getHost()}/Gadget/GetGadgetbyName?name=${name}`,
@@ -229,7 +252,71 @@ function Main(){
     }
     function setToLocalStorageGadgets(baskeGadgets){
         localStorage.setItem('basketGadgets', JSON.stringify(baskeGadgets));
-        console.log(baskeGadgets.map((item, index)=>(item.id)).length);
+        
+    }
+    function getBanners(){
+        axios({
+            method:'get',
+            url: `https://${host.getHost()}/Banner/GetBanners`,
+            headers: {
+                'Accept': '*/*',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(data=>
+        {
+            setBanners(data.data); 
+            
+        });    
+    }
+    function gadgetPage(id, status){
+        if(status == true)
+        {
+            window.location.href=`/characteristic/${id}`;   
+        }
+        else{
+            window.confirm('Sold Out!')    
+        }
+    }
+    function closeCrediCard(){
+        setCreditFormInline('none');
+    }
+    function checkingLetters(str) {
+        return /^[а-яА-Яa-zA-Z\s]*$/.test(str);
+    }
+    function checkingNumbers(num) {
+        return /^\d+$/.test(num);
+    }
+    
+    function buyAllBasket(){
+        if(checkingNumbers(state.number)&&checkingNumbers(state.expiry)&&checkingNumbers(state.cvc)&&checkingLetters(state.name)){
+            if(state.number.length==16&&state.expiry.length==4&&state.cvc.length==3)
+            {
+                axios({
+                    method:'post',
+                    url: `https://${host.getHost()}/Gadget/BuyGadgets`,
+                    data: JSON.stringify(baskeGadgets),
+                    headers: {
+                        'Accept': '*/*',
+                        'Content-Type': 'application/json',
+                        "Authorization": "Bearer " + window.sessionStorage.getItem('token'),
+                    }
+                })
+                .then(data=>{
+                    alert('Congratulations on your purchase!');
+                    localStorage.setItem('basketGadgets', JSON.stringify([]));
+                    window.location.reload();
+                    
+                })
+                
+            }
+            else{
+                alert('Data entered incorrectly!');
+            }
+        }
+        else{
+            alert('Data entered incorrectly!');
+        }
     }
     return(
     <div className="App1">
@@ -354,7 +441,8 @@ function Main(){
                 basketFormInline={basketFormInline}
                 setBasketFormInline={setBasketFormInline}
                 refreshBasket={refreshBasket}
-                setToLocalStorageGadgets={setToLocalStorageGadgets}
+                setCreditFormInline = {setCreditFormInline}
+                setAllPrice = {setAllPrice}
             ></BasketGadjeds>
             <Purchases
                 purchasesFormInline={purchasesFormInline}
@@ -367,10 +455,10 @@ function Main(){
                 <section className='slider'>
                     <img className='left-arrow' src="https://web-design-kursak.s3.eu-west-2.amazonaws.com/arrow_forward_ios_black_24dp.svg"onClick={prevSlide}></img>
                     <img className='right-arrow'src="https://web-design-kursak.s3.eu-west-2.amazonaws.com/arrow_forward_ios_black_24dp.svg" onClick={nextSlide}></img>
-                    {SliderData.map((slide, index) => {
+                    {banners.map((slide, index) => {
                     return(
-                        <div className={index === current ? 'slide active' : 'slide'} key={index}>
-                            {index === current && (<img src={slide.image} alt='travel image' className='image' />)}
+                        <div id="banner" className={index === current ? 'slide active' : 'slide'} key={index}>
+                            {index === current && (<img src={slide.imgUrl} onClick={()=>gadgetPage(slide.fkGadgetsId, slide.fkGadgets.status)}  alt='travel image' className='image' />)}
                         </div>
                     );})}
                 </section>
@@ -378,6 +466,16 @@ function Main(){
             <br></br>
             <br></br>
             <br></br>
+            <div id="formBuy" style={{display: creditFormInline}}>
+                <CrediCad
+                    state={state}
+                    setState={setState}
+                />
+                <button className="Btn" id="DellBtn2" onClick={()=>closeCrediCard()}>X</button>
+                <button style={{marginLeft:'0%', marginTop:'15px'}} className="BuyBtn" onClick={()=>buyAllBasket()}>PAY</button>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <span>Total price: <b>{allPrice} ₴</b></span>   
+            </div>
             <div style={{textAlign: 'center', marginTop: '50px'}}>
                 {/*<span className="top" onClick={()=>(window.location.reload())}>ISTORE</span>*/}
                 <div className="main-container"onClick={()=>(window.location.reload())}>

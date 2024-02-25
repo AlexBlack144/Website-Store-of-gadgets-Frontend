@@ -9,9 +9,11 @@ import {DislikeOutlined, LikeOutlined} from "@ant-design/icons";
 import axios from "axios";
 import '../cssFiles/style_characteristic.css';
 import '../cssFiles/style_logo_text.css';
+
 import Purchases from '../components/Purchases.js';
 import BasketGadjeds  from '../components/BasketGadjeds.js';
 import Comments from "../components/Comments.js";
+import CrediCad from '../components/CreditCard.js';
 
 export default function Сharacteristic(){
     const {idGadget} = useParams();
@@ -35,6 +37,15 @@ export default function Сharacteristic(){
     const [btnLike2, setBtnLike2] = useState("")
     const [btnDis2, setBtnDis2] = useState("")
     const [userId, setUserId] = useState("");
+    const [creditFormInline, setCreditFormInline] = useState('none');
+    const [allPrice,setAllPrice] = useState(0);
+    const [state, setState] = useState({
+        number: '',
+        expiry: '',
+        cvc: '',
+        name: '',
+        focus: '',
+    });
 
     function getUserId(){
         axios({
@@ -285,7 +296,45 @@ export default function Сharacteristic(){
         }
         console.log(userIdLikeOrDis);
     }
-    
+    function closeCrediCard(){
+        setCreditFormInline('none');
+    }
+    function checkingLetters(str) {
+        return /^[а-яА-Яa-zA-Z\s]*$/.test(str);
+    }
+    function checkingNumbers(num) {
+        return /^\d+$/.test(num);
+    }
+    function buyAllBasket(){
+        if(checkingNumbers(state.number)&&checkingNumbers(state.expiry)&&checkingNumbers(state.cvc)&&checkingLetters(state.name)){
+            if(state.number.length==16&&state.expiry.length==4&&state.cvc.length==3)
+            {
+                axios({
+                    method:'post',
+                    url: `https://${host.getHost()}/Gadget/BuyGadgets`,
+                    data: JSON.stringify(baskeGadgets),
+                    headers: {
+                        'Accept': '*/*',
+                        'Content-Type': 'application/json',
+                        "Authorization": "Bearer " + window.sessionStorage.getItem('token'),
+                    }
+                })
+                .then(data=>{
+                    alert('Congratulations on your purchase!');
+                    localStorage.setItem('basketGadgets', JSON.stringify([]));
+                    window.location.reload();
+                    
+                })
+                
+            }
+            else{
+                alert('Data entered incorrectly!');
+            }
+        }
+        else{
+            alert('Data entered incorrectly!');
+        }
+    }
     useEffect(() => {
         checkLikeOrDis();
     });
@@ -365,7 +414,8 @@ return(
                     basketFormInline={basketFormInline}
                     setBasketFormInline={setBasketFormInline}
                     refreshBasket={refreshBasket}
-                    setToLocalStorageGadgets={setToLocalStorageGadgets}
+                    setCreditFormInline={setCreditFormInline}
+                    setAllPrice={setAllPrice}
                 ></BasketGadjeds>
                 <Purchases
                     purchasesFormInline={purchasesFormInline}
@@ -373,6 +423,16 @@ return(
                     purchases={purchases}
                     setPurchases={setPurchases}              
                 ></Purchases>
+            </div>
+            <div id="formBuy2" style={{display: creditFormInline}}>
+                <CrediCad
+                    state={state}
+                    setState={setState}
+                />
+                <button className="Btn" id="DellBtn2" onClick={()=>closeCrediCard()}>X</button>
+                <button style={{marginLeft:'0%', marginTop:'15px'}} className="BuyBtn" onClick={()=>buyAllBasket()}>PAY</button>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <span>Total price: <b>{allPrice} ₴</b></span>   
             </div>
             <div className="columns-menu">
                 <div className="cart" id={gadget['id']} style={{width:'45%', height: '200%'}}>

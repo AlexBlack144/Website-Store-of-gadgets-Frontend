@@ -4,7 +4,7 @@ import { Hosting } from '../components/Hosting.ts';
 import { useState, useEffect } from "react";
 
 
-const BasketGadjeds=({baskeGadgets, btnBasketDell, basketFormInline, setBasketFormInline, refreshBasket, setToLocalStorageGadgets})=>{
+const BasketGadjeds=({baskeGadgets, btnBasketDell, basketFormInline, setBasketFormInline, refreshBasket, setCreditFormInline, setAllPrice})=>{
     const [host] = useState(new Hosting());
     function totalPrice(){
         let totPrice = 0;
@@ -12,27 +12,13 @@ const BasketGadjeds=({baskeGadgets, btnBasketDell, basketFormInline, setBasketFo
         {
             totPrice+=item.price*item.count;
         }
+        setAllPrice(totPrice);
         return totPrice;
     }
     function buyAllBasket(){
         
-
-        axios({
-            method:'post',
-            url: `https://${host.getHost()}/Gadget/BuyGadgets`,
-            data: JSON.stringify(baskeGadgets),
-            headers: {
-                'Accept': '*/*',
-                'Content-Type': 'application/json',
-                "Authorization": "Bearer " + window.sessionStorage.getItem('token'),
-            }
-        })
-        .then(data=>{
-            alert('Congratulations on your purchase!');
-            localStorage.setItem('basketGadgets', JSON.stringify([]));
-            window.location.reload();
-            
-        })
+        setCreditFormInline('inline');
+        setBasketFormInline('none');
     }
     return(
         <div id="basket-form" style={{display: basketFormInline}}>

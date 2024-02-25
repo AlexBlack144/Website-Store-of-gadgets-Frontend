@@ -9,7 +9,7 @@ import axios from "axios";
 import React from "react";
 
 function Manager(){
-
+   
     const [host] = useState(new Hosting());
 
     const [nameCategoryNew, setNameCategoryNew] = useState('');
@@ -20,6 +20,7 @@ function Manager(){
     const [quantityNew, setQuantityNew] = useState('');
     const [statusNew, setStatusNew] = useState('true');
     const [selectCategoryNew, setSelectCategoryNew] = useState('1');
+    const [selectGadgetNew, setSelectGadgetNew] = useState('1');
 
     const [idUpdate, setIdUpdate] = useState(0);
     const [imgUpdate, setImgUpdate] = useState('');
@@ -31,10 +32,13 @@ function Manager(){
     const [soldUpdate, setSoldUpdate] = useState('');
     const [statusUpdate, setStatusUpdate] = useState('true');
     const [selectCategoryUpdate, setSelectCategoryUpdate] = useState('1');
+    const [selectGadgetUpdate, setSelectGadgetUpdate] = useState('1');
 
     const [form1Inline, setForm1Inline] = useState('none');
     const [form2Inline, setForm2Inline] = useState('none');
     const [form3Inline, setForm3Inline] = useState('none');
+    const [formBannerAdd, setFormBannerAdd] = useState('none');
+    const [formBannerUpdate, setFormBannerUpdate] = useState('none');
 
     const [categories, setCategories] = useState([]);
     const [gadgets, setGadgets] = useState([]);
@@ -43,17 +47,39 @@ function Manager(){
 
     const [currentPage, setCurrentPage] = useState(1);
     const [cardsPerPage, setcardsPerPage] = useState(5);
-
+    
+    var resGadgets = gadgets.sort(function (a, b) {
+        if (a.idCategoryNavigation.name < b.idCategoryNavigation.name) {
+          return -1;
+        }
+        if (a.idCategoryNavigation.name > b.idCategoryNavigation.name) {
+          return 1;
+        }
+        return 0;
+    });
+    
     const paginate = pageNumber => setCurrentPage(pageNumber)
     const lastCardIndex = currentPage * cardsPerPage;
     const firstCardIndex = lastCardIndex - cardsPerPage;
     const currentCard = gadgets.slice(firstCardIndex, lastCardIndex);
-   
+
     var uniqueNames = [];
     const [models, setModels] = useState([]);
     const [range, setRange] = React.useState([50, 100000]);
     const [search, setSearch] = useState("");
+    const [current, setCurrent] = useState(0);
+    const [banners, setBanners] = useState([]);
+    const [gadgetBanner, setGadgetBanner] = useState([]);
+ 
+    const nextSlide = () => {setCurrent(current === length - 1 ? 0 : current + 1);};
+    const prevSlide = () => {setCurrent(current === 0 ? length - 1 : current - 1);};
+    
+    useEffect(() => {
+        getBanners();
+    },[]);
 
+    if (!Array.isArray(banners) || banners.length <= 0) {return null;}
+    const length = banners.length;
   
     const saveFile = (e)=>{
         setFile(e.target.files[0]);
@@ -117,10 +143,19 @@ function Manager(){
         
     }
     function btnFormAddGadget(){
+        window.scrollTo({
+            top: 550,
+            left: 0,
+            behavior: 'smooth',
+        });
         setForm1Inline('inline');
     }
     function btnFormUpdate(id, img, name, description, model, price, quantity, sold, status, idCategory){
-        window.scrollTo(0, 0);
+        window.scrollTo({
+            top: 650,
+            left: 0,
+            behavior: 'smooth',
+        });
         setIdUpdate(id);
         setImgUpdate(img);
         setNameUpdate(name);
@@ -134,6 +169,7 @@ function Manager(){
         setForm2Inline('inline');
     }
     const btnAddGadget= async (e)=>{
+       
         const formData = new FormData();
         formData.append("file", file);
 
@@ -146,7 +182,6 @@ function Manager(){
             } 
         }) 
         .then(data => {
-            console.log(data.data); 
             addGadget(data.data)
         })
         .catch(error => { console.log(error.data)});
@@ -175,7 +210,7 @@ function Manager(){
             }
         })
         .then(data=>{
-           console.log(data);
+     
            window.location.reload();
         })
     }
@@ -193,15 +228,22 @@ function Manager(){
                 }
             })
             .then(data=>{
-               console.log(data);
-               window.location.reload();
+                
+               if(data.data.statusCode!=200)
+               {
+                alert('Your gadget is linked to the banner!');
+               }
+               else{
+                    window.location.reload();
+               }
+               
             })
+     
         } 
     }
     const btnUpdateGadget = async (e)=>{
         if (window.confirm('Are you sure you want to update?'))
         {
-            setForm2Inline('none');
             const formData = new FormData();
             formData.append("file", file);
 
@@ -218,13 +260,13 @@ function Manager(){
             })
             .catch(error => { 
                 updateGadget(imgUpdate);
-                console.log(error.data);
+  
             });  
         }
         
     }
     function updateGadget(img){
-        console.log(statusUpdate==='true');
+
         let update_gadget = {
             Id: parseInt(idUpdate),
             Image: img,
@@ -248,7 +290,6 @@ function Manager(){
             }
         })
         .then(data=>{
-            console.log(data);
             window.location.reload();
         })
     }
@@ -259,14 +300,18 @@ function Manager(){
         }
         else{
             
-            console.log(window.sessionStorage.getItem('token'));
+
             window.sessionStorage.setItem('token', null)
             window.location.href = '/login';
         }
        
     }
     function btnFormAddCategory(){
-
+        window.scrollTo({
+            top: 550,
+            left: 0,
+            behavior: 'smooth',
+        });
         setForm3Inline('inline');
     }
     function addCategory(){
@@ -303,7 +348,7 @@ function Manager(){
                 }
             })
             .then(data=>{
-               console.log(data);
+        
                window.location.reload();
             })
         }
@@ -323,7 +368,7 @@ function Manager(){
             min: range[0],
             max: range[1],
         };
-        console.log(filter_gadget)
+  
         axios({
             method:'post',
             url: `https://${host.getHost()}/Gadget/GetGadgetFilter`,
@@ -372,6 +417,173 @@ function Manager(){
     function clearSearch(){
         setSearch("");
     }
+    function getBanners(){
+        axios({
+            method:'get',
+            url: `https://${host.getHost()}/Banner/GetBanners`,
+            headers: {
+                'Accept': '*/*',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(data=>
+        {
+            setBanners(data.data); 
+          
+        });    
+    }
+    function addBannerForm(){
+        window.scrollTo({
+            top: 550,
+            left: 0,
+            behavior: 'smooth',
+        });
+        setFormBannerAdd('inline');
+    }
+    const btnAddBanner = async (e)=>{
+        if(selectGadgetNew!='1'){
+        const formData = new FormData();
+        formData.append("file", file);
+
+        await axios.post(`https://${host.getHost()}/Banner/UploadImg`, formData, 
+        { 
+            headers: 
+            { 
+                'Content-Type': 'multipart/form-data',
+                "Authorization": "Bearer " + window.sessionStorage.getItem('token')
+            } 
+        }) 
+        .then(data => {
+           
+            addBanner(data.data)
+        })
+        .catch(error => { console.log(error.data)}); 
+        }
+        else{
+            alert("You need select gadget!")
+        }
+        
+    }
+    function addBanner(img) {
+        let new_banner = {
+            id: 0,
+            fkGadgetsId: selectGadgetNew,
+            imgUrl: img
+        };
+        axios({
+            method:'post',
+            url: `https://${host.getHost()}/Banner/AddBanner`,
+            data: JSON.stringify(new_banner),
+            dataType: "dataType",
+            headers: {
+                'Accept': '*/*',
+                'Content-Type': 'application/json',
+                "Authorization": "Bearer " + window.sessionStorage.getItem('token')
+            }
+        })
+        .then(data=>{
+        
+           window.location.reload();
+        })
+    }
+    function updateBannerForm(id,imgUrl,idGadget,brand,model){
+        window.scrollTo({
+            top: 550,
+            left: 0,
+            behavior: 'smooth',
+        });
+        let gadget_banner = {
+            id: id,
+            imgUrl: imgUrl,
+            idGadget: idGadget,
+            brand: brand,
+            model: model
+        };
+        setGadgetBanner(gadget_banner);
+        setFormBannerUpdate('inline');
+    }
+    const btnUpdateBanner = async (e)=>{
+        if (window.confirm('Are you sure you want to update?')){
+            
+            setFormBannerUpdate('none');
+            const formData = new FormData();
+        formData.append("file", file);
+
+            await axios.post(`https://${host.getHost()}/Banner/UploadImg`, formData, 
+            { 
+            headers: 
+            { 
+                'Content-Type': 'multipart/form-data',
+                "Authorization": "Bearer " + window.sessionStorage.getItem('token')
+            } 
+            }) 
+            .then(data => { 
+                updateBanner(data.data)
+            })
+            .catch(error => {
+                updateBanner(gadgetBanner.imgUrl);
+                
+            });  
+                    
+                  
+        }
+
+    }
+    function updateBanner(img){
+        let GadgetId = selectGadgetUpdate;
+        if(GadgetId=='1'){
+            GadgetId = gadgetBanner.idGadget;
+        }
+        let update_banner = {
+            id: gadgetBanner.id,
+            fkGadgetsId: GadgetId,
+            imgUrl: img
+        };
+        axios({
+            method:'post',
+            url: `https://${host.getHost()}/Banner/UpdateBannerbyId`,
+            data: JSON.stringify(update_banner),
+            headers: {
+                'Accept': '*/*',
+                'Content-Type': 'application/json',
+                "Authorization": "Bearer " + window.sessionStorage.getItem('token')
+            }
+        })
+        .then(data=>{
+
+            window.location.reload();
+        })    
+    }
+    function dellBanner(id){
+        if (window.confirm('Are you sure you want to delete?'))
+        {
+            axios({
+                method:'post',
+                url: `https://${host.getHost()}/Banner/RemoveBannerbyId`,
+                data: JSON.stringify(id),
+                dataType: "dataType",
+                headers: {
+                    'Accept': '*/*',
+                    'Content-Type': 'application/json',
+                    "Authorization": "Bearer " + window.sessionStorage.getItem('token')
+                }
+            })
+            .then(data=>{
+  
+               window.location.reload();
+            })
+        }
+    }
+    function goCharPage(id){
+        if(resGadgets.find(item => item.id === id && item.status === true))
+        {
+            window.location.href=`/characteristic/${id}`  
+        }
+        else{
+            alert("Status Disable!");
+        }
+    }
+    
     return(
         <div className="App-header1">
             <div id="DivRegisAndLoginLinks">
@@ -408,6 +620,21 @@ function Manager(){
                 </div>  
             </div>
             <br></br>
+            <div id="baner">
+                <section className='slider'>
+                    <img className='left-arrow' src="https://web-design-kursak.s3.eu-west-2.amazonaws.com/arrow_forward_ios_black_24dp.svg"onClick={prevSlide}></img>
+                    <img className='right-arrow'src="https://web-design-kursak.s3.eu-west-2.amazonaws.com/arrow_forward_ios_black_24dp.svg" onClick={nextSlide}></img>
+                    {banners.map((slide, index) => {
+                    return(
+                        <div id="banner" className={index === current ? 'slide active' : 'slide'} key={index}>
+                                <button className = "Btn" id = "DellBtn" onClick={()=>dellBanner(slide.id)}>X</button>
+                                {index === current && (<img src={slide.imgUrl} onClick={()=>updateBannerForm(slide.id,slide.imgUrl,slide.fkGadgetsId,slide.fkGadgets.name,slide.fkGadgets.model)} alt='travel image' className='image' />)}
+                                <span id="IdBanner">{current+1}</span>  
+                            </div>
+                    );})}
+                </section>
+            </div>
+            <br></br>
             <div style={{textAlign: 'center'}}>
             <div className="main-container3"onClick={()=>(window.location.href='/')}>
                     <div class="first-container share">
@@ -423,6 +650,7 @@ function Manager(){
             <div className="container-menu" id="container"  style={{cursor: 'pointer'}}>
                 <div className = "name_category" style={{ borderBlockColor: 'yellow'}} onClick={() =>btnFormAddCategory()} >Add Category</div>
                 <div className = "name_category" style={{ borderBlockColor: 'yellow'}} onClick={() =>btnFormAddGadget()} >Add Gadget</div>
+                <div className = "name_category" style={{ borderBlockColor: 'yellow'}} onClick={() =>addBannerForm()} >Add Banner</div>
                 <div className = "name_category" style={{ borderBlockColor: 'yellow'}} onClick={() => window.location.reload()} >Show All</div>
                 <div className = "name_category" style={{ borderBlockColor: 'yellow'}} onClick={() => window.location.href='/History'} >Purchase history</div>
             </div>
@@ -525,6 +753,62 @@ function Manager(){
                     <br></br>
                     <br></br>
                 </div>
+
+                <div id="form1" style={{display: formBannerAdd, width:'300px'}}>
+                    <br></br>
+                    <button className ="Btn" id ="DellBtn" onClick={()=>setFormBannerAdd('none')} style={{marginLeft:'110px', marginTop: '-15px', position: 'absolute'}} >X</button>
+                    <br></br>
+                    <input type="file" className="file" onChange={saveFile} accept="image/*"></input>
+                    <br></br>
+                    <br></br>
+                    <label>Gadget: </label>
+                    <select id="select_category" defaultValue="1" onChange={(e)=>{setSelectGadgetNew(e.target.value)}}>
+                    {<option></option>}
+                    {    
+                        resGadgets.map((item, index)=>(
+                            <option key={index} value={item.id}>
+                                {item.idCategoryNavigation.name+': '+item.name+': '+item.model}
+                            </option>
+                        ))
+                    }
+                    </select>
+                    <br></br>
+                    <br></br>
+                    <button className="btn_gadget" id="create_gadget" value="upload" onClick={() =>btnAddBanner()}>Add</button>
+                    <br></br>
+                    <br></br>
+                </div>
+                <div id="form2" style={{display: formBannerUpdate, width:'300px'}}>
+                <br></br>
+                    <button className ="Btn" id ="DellBtn" onClick={()=>setFormBannerUpdate('none')} style={{marginLeft:'110px', marginTop: '-15px', position: 'absolute'}}>X</button>
+                    <br></br>
+                    <input type="file" className="file" onChange={saveFile} accept="image/*"></input>
+                    <br></br>
+                    <br></br>
+                    <label>Old Gadget: </label>
+                    <br></br>
+                    <b className="oldGadgetName" onClick={()=>goCharPage(gadgetBanner.idGadget)}>{gadgetBanner.brand}: {gadgetBanner.model} </b>
+                    <br></br>
+                    <br></br>
+                    <label>New Gadget: </label>
+                    <select id="select_gadget" onChange={(e)=>{setSelectGadgetUpdate(e.target.value)}}>
+                    {
+                        <option></option>
+                    }
+                    {    
+                        resGadgets.map((item, index)=>(
+                            <option key={index} value={item.id}>
+                                {item.idCategoryNavigation.name+': '+item.name+': '+item.model}
+                            </option>
+                        ))
+                    }
+                    </select>
+                    <br></br>
+                    <br></br>
+                    <button className="btn_gadget" id="create_gadget" value="upload" onClick={() =>btnUpdateBanner()}>Update</button>
+                    <br></br>
+                    <br></br>
+                </div>
             </div>
             <br></br>
             <div className="columns-menu">
@@ -568,14 +852,14 @@ function Manager(){
                         {getAllGadgets()}
                         {
                         currentCard.map((item, index)=>(
-                            <tr key={index} className = "row" id={item.id}>
-                                <td><img className = "img_gadget-table"  src={item.image}></img></td>
-                                <td className="cart_gadget-table">{item.name}</td>
-                                <td className="cart_gadget-table">{item.model}</td>
-                                <td className="cart_gadget-table">{item.price}₴</td>
-                                <td className="cart_gadget-table">{item.quantity}</td>
-                                <td className="cart_gadget-table">{item.sold}</td>
-                                <td className="cart_gadget-table">{`${item.status}`}</td>
+                            <tr key={index} className = "row" id={item.id} style={{cursor:'pointer'}}>
+                                <td><img className = "img_gadget-table" onClick={()=>goCharPage(item.id)} src={item.image}></img></td>
+                                <td className="cart_gadget-table" onClick={()=>goCharPage(item.id)}>{item.name}</td>
+                                <td className="cart_gadget-table" onClick={()=>goCharPage(item.id)}>{item.model}</td>
+                                <td className="cart_gadget-table" onClick={()=>goCharPage(item.id)}>{item.price}₴</td>
+                                <td className="cart_gadget-table" onClick={()=>goCharPage(item.id)}>{item.quantity}</td>
+                                <td className="cart_gadget-table" onClick={()=>goCharPage(item.id)}>{item.sold}</td>
+                                <td className="cart_gadget-table" onClick={()=>goCharPage(item.id)}>{`${item.status}`}</td>
                                 <td className="form_for_btns-table">
                                     <button className = "Btn" id = "UpdateBtn" onClick={()=>btnFormUpdate(
                                             item.id, 
