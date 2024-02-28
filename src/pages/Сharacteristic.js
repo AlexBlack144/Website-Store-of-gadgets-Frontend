@@ -167,7 +167,6 @@ export default function Сharacteristic(){
         }
     }
     function btnDellComment(id){
-       
         let set_id = {
             id: id
         }

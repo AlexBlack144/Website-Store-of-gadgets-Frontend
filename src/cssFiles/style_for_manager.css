@@ -63,7 +63,7 @@ td, th{
     box-shadow: 0px 0px 5px #757575;
 }
 #form2{
-   
+    
     flex-flow: column wrap;
     justify-content: center;
     width: 200px; 
@@ -166,12 +166,13 @@ input[type=file]::file-selector-button {
 }
 #banner>img:hover{
     box-shadow: 0px 0px 20px #080808;
+    opacity: 1;
     cursor: pointer;
 }
 #IdBanner{
     position: absolute;
     text-align: center;
-    margin-top: 45%;
+    margin-top: 52%;
     margin-left: 50%;
     width: 25px;
     height: 25px;

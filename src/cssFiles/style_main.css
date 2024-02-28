@@ -79,10 +79,10 @@
 box-shadow: 0px 0px 5px #757575;
 }
 .img_gadget{
-width: 100%;
+width: 80px;
 max-height: 120px;
 max-width: 100px;
-margin-left: 75px;
+margin-left: 85px;
 }
 .cart_gadget{
 text-align: center;
@@ -213,10 +213,10 @@ color: white;
 
 }
 .image {
-  width: 1000px;
-  height: 400px;
+  width: 950px;
+  height: 450px;
   border-radius: 10px;
-  opacity: 0.7;
+  opacity: 0.8;
 }
 .right-arrow {
   height: 80px;

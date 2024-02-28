@@ -140,6 +140,11 @@ function Main(){
         .then(data=>
         {
             setGadgets(data.data.filter((item, index) => { return item.status==true}));
+            window.scrollTo({
+                top: 600,
+                left: 0,
+                behavior: 'smooth',
+            }); 
         });
         
     }
@@ -181,6 +186,7 @@ function Main(){
             })
             .then(data=>
             {
+                console.log(data.data)
                 setCategories(data.data);
             })
             setFlag2(1);
@@ -451,6 +457,7 @@ function Main(){
                 setPurchases={setPurchases}              
             ></Purchases>
             <br></br>
+            <br></br>
             <div id="baner">
                 <section className='slider'>
                     <img className='left-arrow' src="https://web-design-kursak.s3.eu-west-2.amazonaws.com/arrow_forward_ios_black_24dp.svg"onClick={prevSlide}></img>
@@ -485,6 +492,7 @@ function Main(){
                 </div> 
             </div>
             <br></br>
+            <br></br>
             <div className="container-menu" id="container" style={{cursor: 'pointer'}}>
             {getCategorys()}
             {
@@ -506,17 +514,19 @@ function Main(){
                         <div id="none"></div>
                     </div>
                     <br></br>
-                    <b>Brand</b>
+                    <b>Series</b>
                     <br></br>
                     <br></br>
-                    {brandlFilter()}
-                    {
-                        uniqueNames.map((item, index)=>(
-                            <div className="brandFilter" key={index} style={{marginBottom: '10px'}}>
-                               <input type="checkbox" className="checkboxes" id={item}></input>
-                                {item}
-                            </div>))
-                    }
+                    <div style={{overflowY:'scroll', maxHeight:'200px'}}>
+                        {brandlFilter()}
+                        {
+                            uniqueNames.map((item, index)=>(
+                                <div className="brandFilter" key={index} style={{marginBottom: '10px'}}>
+                                <input type="checkbox" className="checkboxes" id={item}></input>
+                                    {item}
+                                </div>))
+                        }
+                    </div>
                     <br></br>
                     <button className="BtnFilter" onClick={()=>filterBtn()}>Find</button>
                 </div>

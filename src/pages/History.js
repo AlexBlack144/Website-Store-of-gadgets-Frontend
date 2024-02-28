@@ -266,31 +266,36 @@ function History(){
                         <div id="none"></div>
                     </div>
                     <br></br>
-                    <b>Brand</b>
+                    <b>Series</b>
                     <br></br>
                     <br></br>
-                    {brandlFilter()}
-                    {
-                        uniqueNames.map((item, index)=>(
-                            <div key={index} style={{marginBottom: '10px'}}>
-                               <input type="checkbox" className="checkboxesBrand" id={item}></input>
-                                {item}
-                            </div>))
-                    }
+                    <div style={{overflowY:'scroll', maxHeight:'200px'}}>
+                        {brandlFilter()}
+                        {
+                            uniqueNames.map((item, index)=>(
+                                <div key={index} style={{marginBottom: '10px'}}>
+                                <input type="checkbox" className="checkboxesBrand" id={item}></input>
+                                    {item}
+                                </div>))
+                        }
+                    </div>
                     <br></br>
                     <b>User</b>
                     <br></br>
                     <br></br>
-                    {userFilter()}
-                    {
-                        uniqueNames2.map((item, index)=>(
-                            <div key={index} style={{marginBottom: '10px'}}>
-                               <input type="checkbox" className="checkboxesUser" id={item}></input>
-                                {item}
-                            </div>))
-                    }
+                    <div style={{overflowY:'scroll', maxHeight:'200px'}}>
+                        {userFilter()}
+                        {
+                            uniqueNames2.map((item, index)=>(
+                                <div key={index} style={{marginBottom: '10px'}}>
+                                <input type="checkbox" className="checkboxesUser" id={item}></input>
+                                    {item}
+                                </div>))
+                        }
+                    </div>
                     <br></br>
                     <button className="BtnFilter" onClick={()=>filterBtn()}>Find</button>
+                    
                 </div>
                 <div id="container-table">
                 <table id="table_gadgets">

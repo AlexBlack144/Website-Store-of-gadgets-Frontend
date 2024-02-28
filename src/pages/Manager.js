@@ -119,6 +119,7 @@ function Manager(){
             })
             .then(data=>
             {
+                console.log(data.data);
                 setCategories(data.data);
             })
             setFlag(1);
@@ -228,7 +229,7 @@ function Manager(){
                 }
             })
             .then(data=>{
-                
+               console.log(data.data); 
                if(data.data.statusCode!=200)
                {
                 alert('Your gadget is linked to the banner!');
@@ -348,11 +349,16 @@ function Manager(){
                 }
             })
             .then(data=>{
-        
-               window.location.reload();
+                if(data.data.statusCode!=400)
+                {
+                    window.location.reload();
+                }
+                else{
+                    alert("Gadgets are tied to this category!");
+                }
+                
             })
         }
-        
     }
     function handleChanges(event, newValue) {
         setRange(newValue);
@@ -410,7 +416,12 @@ function Manager(){
         })
         .then(data=>
         {
-            setGadgets(data.data); 
+            setGadgets(data.data);
+            window.scrollTo({
+                top: 600,
+                left: 0,
+                behavior: 'smooth',
+            }); 
         });
         
     }
@@ -555,24 +566,31 @@ function Manager(){
         })    
     }
     function dellBanner(id){
-        if (window.confirm('Are you sure you want to delete?'))
-        {
-            axios({
-                method:'post',
-                url: `https://${host.getHost()}/Banner/RemoveBannerbyId`,
-                data: JSON.stringify(id),
-                dataType: "dataType",
-                headers: {
-                    'Accept': '*/*',
-                    'Content-Type': 'application/json',
-                    "Authorization": "Bearer " + window.sessionStorage.getItem('token')
-                }
-            })
-            .then(data=>{
-  
-               window.location.reload();
-            })
+        if(banners.length>1){
+            if (window.confirm('Are you sure you want to delete?'))
+            {
+                
+                axios({
+                    method:'post',
+                    url: `https://${host.getHost()}/Banner/RemoveBannerbyId`,
+                    data: JSON.stringify(id),
+                    dataType: "dataType",
+                    headers: {
+                        'Accept': '*/*',
+                        'Content-Type': 'application/json',
+                        "Authorization": "Bearer " + window.sessionStorage.getItem('token')
+                    }
+                })
+                .then(data=>{
+    
+                window.location.reload();
+                })
+            }
         }
+        else{
+            alert("You can't delete the last banner!");
+        }
+        
     }
     function goCharPage(id){
         if(resGadgets.find(item => item.id === id && item.status === true))
@@ -619,6 +637,7 @@ function Manager(){
                     <img src="https://web-design-kursak.s3.eu-west-2.amazonaws.com/logout_black_24dp+(1).svg" style={{width:'18px', height: '18px'}} alt="React Logo"></img>
                 </div>  
             </div>
+            <br></br>
             <br></br>
             <div id="baner">
                 <section className='slider'>
@@ -673,7 +692,7 @@ function Manager(){
                     <button className ="Btn" id ="DellBtn" onClick={()=>setForm1Inline('none')} style={{marginLeft:'90px', marginTop: '-15px', position: 'absolute'}} >X</button>
                     <label>Image:</label>
                     <input type="file" className="file" onChange={saveFile} accept="image/*"></input>
-                    <label>Brand:</label>
+                    <label>Series:</label>
                     <input className="new_gadget" id="name_new_gadget" onChange={(e)=>{setNameNew(e.target.value)}}></input>
                     <label>Model:</label>
                     <input className="new_gadget" id="model_new_gadget" onChange={(e)=>{setModelNew(e.target.value)}}></input>
@@ -696,6 +715,8 @@ function Manager(){
                     ))
                     }
                     </select>
+                    <label>Description:</label>
+                    <textarea className="new_gadget" id="description_update_gadget" value={descriptionNew} onChange={(e)=>{setDescriptionNew(e.target.value)}}></textarea>
                     <br></br>
                     <br></br>
                     <button className="btn_gadget" id="create_gadget" value="upload" onClick={() =>btnAddGadget()}>Add</button>
@@ -707,7 +728,7 @@ function Manager(){
                     <button className = "Btn" id = "DellBtn" onClick={()=>setForm2Inline('none')} style={{marginLeft:'90px', marginTop: '-15px', position: 'absolute'}}>X</button>
                     <label>Image:</label>
                     <input type="file" className="file" onChange={saveFile} accept="image/*"></input>
-                    <label>Brand:</label>
+                    <label>Series:</label>
                     <input className="new_gadget" id="name_update_gadget" value={nameUpdate} onChange={(e)=>{setNameUpdate(e.target.value)}}></input>
                     <label>Model:</label>
                     <input className="new_gadget" id="model_update_gadget" value={modelUpdate} onChange={(e)=>{setModelUpdate(e.target.value)}}></input>
@@ -718,9 +739,10 @@ function Manager(){
                     <label>Sold:</label>
                     <input type='number' className="new_gadget" id="sold_update_gadget" value={soldUpdate} onChange={(e)=>{setSoldUpdate(e.target.value)}}></input>
                     <label>Status:</label>
-                    <select id="status_update_gadget"  onChange={(e)=>{setStatusUpdate(e.target.value)}}>
-                        <option value={'true'}>Enablet</option>
-                        <option value={'false'}>Disabled</option>
+                    <select id="status_update_gadget" defaultValue="none" onChange={(e)=>{setStatusUpdate(e.target.value)}}>
+                        <option value="none"></option>
+                        <option value="true">Enablet</option>
+                        <option value="false">Disabled</option>
                     </select>
                     <label>Category:</label>
                     <select id="select_update_category" defaultValue={selectCategoryUpdate} onChange={(e)=>{setSelectCategoryUpdate(e.target.value)}}>
@@ -821,17 +843,19 @@ function Manager(){
                         <div id="none"></div>
                     </div>
                     <br></br>
-                    <b>Brand</b>
+                    <b>Series</b>
                     <br></br>
                     <br></br>
-                    {brandlFilter()}
-                    {
-                        uniqueNames.map((item, index)=>(
-                            <div key={index} style={{marginBottom: '10px'}}>
-                               <input type="checkbox" className="checkboxes" id={item}></input>
-                                {item}
-                            </div>))
-                    }
+                    <div style={{overflowY:'scroll', maxHeight:'200px'}}>
+                        {brandlFilter()}
+                        {
+                            uniqueNames.map((item, index)=>(
+                                <div key={index} style={{marginBottom: '10px'}}>
+                                <input type="checkbox" className="checkboxes" id={item}></input>
+                                    {item}
+                                </div>))
+                        }
+                    </div>
                     <br></br>
                     <button className="BtnFilter" onClick={()=>filterBtn()}>Find</button>
                 </div>

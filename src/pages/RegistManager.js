@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 import { createElement, useState } from 'react';
-import { Hosting } from '../components/Hosting.ts';
 import axios from "axios";
+import { fontSize } from "@mui/system";
+import { Hosting } from '../components/Hosting.ts';
+import {EyeInvisibleOutlined, EyeOutlined} from "@ant-design/icons";
 export default function RegistManager() {
 
 const [host] = useState(new Hosting());
@@ -9,6 +11,7 @@ const [login, setLogin] = useState("");
 const [email, setEmail] = useState("");
 const [pass, setPass] = useState("");
 const [pass2, setPass2] = useState("");
+const [visible, setVisible] = useState(false);
 
   function RegisterManager()
   {
@@ -75,10 +78,12 @@ const [pass2, setPass2] = useState("");
                   <p>Use !_#</p>
                   <p>Min 6 characters</p>
                 </div>
-                <input className="Input" onChange={(e)=>{setPass(e.target.value)}} id="pass" type='password'></input>
+                <input className="Input" onChange={(e)=>{setPass(e.target.value)}} id="pass" type={visible ? "text" : "password"}></input>
+                <div id="eye2" onClick={()=>setVisible(!visible)}>{ visible ? <EyeOutlined/>:<EyeInvisibleOutlined/>}</div>
                 <br></br>
                 <label>Password again</label>
-                <input className="Input" onChange={(e)=>{setPass2(e.target.value)}} id="pass2" type='password'></input>
+                <input className="Input" onChange={(e)=>{setPass2(e.target.value)}} id="pass2" type={visible ? "text" : "password"}></input>
+                <div id="eye3" onClick={()=>setVisible(!visible)}>{ visible ? <EyeOutlined/>:<EyeInvisibleOutlined/>}</div>
                 <br></br>
                 <button id='Btn' className="btn_login_regist" onClick={RegisterManager}> Register </button>
                 <br></br>
